@@ -15,6 +15,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\HelperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ use App\Http\Controllers\LecturerController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('test', [HelperController::class, 'index']);
 
 
 Route::get('/profile', function () {

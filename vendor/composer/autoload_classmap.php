@@ -45,7 +45,6 @@ return array(
     'App\\Models\\Accountant' => $baseDir . '/app/Models/Accountant.php',
     'App\\Models\\Admin' => $baseDir . '/app/Models/Admin.php',
     'App\\Models\\Announcement' => $baseDir . '/app/Models/Announcement.php',
-    'App\\Models\\AuditTrail' => $baseDir . '/app/Models/AuditTrail.php',
     'App\\Models\\Course' => $baseDir . '/app/Models/Course.php',
     'App\\Models\\Course_unit' => $baseDir . '/app/Models/Course_unit.php',
     'App\\Models\\Lecture_Course_units' => $baseDir . '/app/Models/Lecture_Course_units.php',

@@ -571,7 +571,6 @@ class ComposerStaticInit220de0dcd3d6fd71963cac60168643c2
         'App\\Models\\Accountant' => __DIR__ . '/../..' . '/app/Models/Accountant.php',
         'App\\Models\\Admin' => __DIR__ . '/../..' . '/app/Models/Admin.php',
         'App\\Models\\Announcement' => __DIR__ . '/../..' . '/app/Models/Announcement.php',
-        'App\\Models\\AuditTrail' => __DIR__ . '/../..' . '/app/Models/AuditTrail.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Models/Course.php',
         'App\\Models\\Course_unit' => __DIR__ . '/../..' . '/app/Models/Course_unit.php',
         'App\\Models\\Lecture_Course_units' => __DIR__ . '/../..' . '/app/Models/Lecture_Course_units.php',

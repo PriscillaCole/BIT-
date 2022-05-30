@@ -13,6 +13,7 @@ use App\Models\User;
 use Database\Seeders\SuperUserSeeder;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Helper\Helper;
 use Auth;
 
 class StudentController extends Controller
@@ -145,6 +146,7 @@ class StudentController extends Controller
         $student->optional_course = $optional_course;
         $student->delivery = $delivery;
         $student->sponsorship = $sponsorship;
+       //$student->studentID = Helper::IDGenerator(new Student, 'studentID', 2, 'BIT');
         $student->studentID = (new StudentController)->studentID($student);
         $student->save();
          // Add activity logs
@@ -173,21 +175,21 @@ class StudentController extends Controller
          //->withProperties(['customProperty' => 'customValue'])
          ->log('registration updated by ' . $userlog->name);
 
-        $payment = Payment::create([
+       /* $payment = Payment::create([
             'registration_id' =>$registration->id,
             'amount' => 0,
             'course_id' => $registration->student->course->id,
-            'receipt_id' =>000001,
             'accountant_id' => Auth()->user()->id,
+            'receipt_id'=> 1,
             'currency'=>'Ugx',
             'semster' => 1,
             'academic_year' => $student->academic_year,
             'studentID'=>$student->studentID,
-        ]);
+        ]);*/
          // Add activity logs
          $userlog = Auth::user();
-         activity('payment')
-         ->performedOn($payment)
+         activity('student')
+         ->performedOn($student)
          ->causedBy($userlog)
          //->withProperties(['customProperty' => 'customValue'])
          ->log('first payment made as student details are being saved by ' . $userlog->name);
@@ -209,18 +211,18 @@ class StudentController extends Controller
         //Show Student
         if (is_null(Payment::where(['studentID'=>$student->studentID])->latest()->first())) {
             # code...
-            // dd($student,Course::where(['id'=>$student->course_id])->latest()->first()->fees);
-            $amt=0;
+             dd($student,Course::where(['id'=>$student->course_id])->latest()->first()->fees);
+           $amt=0;
             $rep="BIT/000";
         }else {
-            // dd($student);
-            $amt=Payment::where(['studentID'=>$student->studentID])->latest()->first()->amount;
-            $rep=Payment::where(['studentID'=>$student->studentID])->latest()->first()->receipt_id;
+            dd($student);
+           $amt=Payment::where(['studentID'=>$student->studentID])->latest()->first()->amount;
+           $rep=Payment::where(['studentID'=>$student->studentID])->latest()->first()->receipt_id;
         }
         
         
         $registrations = Registration::where('student_id', $student->id)->get();
-        return view('students.show', compact('student', 'registrations','amt','rep'));
+       return view('students.show', compact('student', 'registrations','amt','rep'));
     }
 
 
@@ -403,18 +405,36 @@ class StudentController extends Controller
 
         }
     }
+    //students unique id
 
 
     public function studentID(Student $student)
     {
         //Generating student id
-        //Count the number of a students in a given academic year and intake
-        $intake_students = Student::where('academic_year',$student->academic_year)
-            ->where('intake', $student->intake)->get()->count();
+        $model = new Student;
+        $trow = 'studentID';
+        $prefix = 'BIT';
+        $length = 2;
+        $count =  $model->count();
+        $data = $model::orderBy('id', 'desc')->first();
+        error_log($count);
 
-        $student_number = sprintf("%03d", $intake_students + 1);
+        // error_log(print_r($_REQUEST, true));
+        $year = Carbon::now()->format('y');
+       
+        if(!$data){
+            $og_length = $length;
+            $last_number = '001';
+        }else{
+            $code = substr($data->$trow, strlen($prefix)+1);
+            $actual_last_number = ((int)$code/1)*1;
+            // $last_number_length = strlen($increment_last_number);
+            // $og_length = $length - $last_number_length;
 
-        $year = substr($student->academic_year, 2, 2);
+
+            $increment_last_number = $count + 1;
+            $last_number = sprintf("%03d", $increment_last_number);
+        }
 
         if ($student->intake == 'January') {
             $month = '01';
@@ -424,7 +444,8 @@ class StudentController extends Controller
             $month = '09';
         }
 
-        $studentID = "BIT/".$year."/".$month."/".$student_number;
+        $studentID = "BIT/".$year."/".$month."/".$last_number;
         return $studentID;
     }
-}
+} 
+
