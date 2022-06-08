@@ -16,6 +16,7 @@
         <div class="card-header">
           <h3 class="card-title">Register Lecturer</h3>
         </div>
+       
         <!-- /.card-header -->
         @if(Session::has('student_added'))
         <div class="alert alert-success" role="alert">
@@ -27,31 +28,8 @@
           @csrf
           <div class="card-body">
            
-            <h5>SECTION 1</h5>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="course">Course Unit(s) to lecture:</label>
-                  <select class="form-control select2" placeholder="Select a course" name="course" style="width:100%;" required>
-                    @foreach ($courses as $course)
-                      <option value="{{$course->course_unit_code}}" >{{ $course->course_name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-               
-                <label for="delivery">Mode of Delivery:</label>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Weekend" required>
-                    <label style="margin-left: 20px;" class="form-check-label">Physical</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Distance Learning" required>
-                    <label  style="margin-left: 20px;"class="form-check-label">Distance Learning</label>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
+           
 
             <h5>1.1: LECTURE’S PERSONAL INFORMATION</h5>
             <div class="row">
@@ -77,28 +55,25 @@
                 </div>
                 <div class="form-group">
                   <label for="country">Country of residence:</label>
-                  <select class="form-control select2" placeholder="Select a Country" name="country" style="width: 100%;" required>
+                  <select class="form-control select2" placeholder=" Select a Country " name="country" style="width: 100%;" required>
                     <!-- @foreach ($courses as $course)
                       <option>{{ $course->name }}</option>
                     @endforeach -->
-                    <option value="">select Country</option>
+                    <option value="">Select Country</option>
                     <option>Uganda<n/option>
                     <option>Kenya</option>
                     <option>S.Sudan</option>
                     <option>Rwanda</option>
                     <option>Tanzania</option>
-                    <option>Burundian/option>
+                    <option>Burundian</option>
                     <option>Eritrea</option>
                     <option>DRC</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="nationality">Nationality:</label>
-                  <select class="form-control select2" placeholder="Select a Nationality" name="nationality" style="width: 100%;" required>
-                    <!-- @foreach ($courses as $course)
-                      <option>{{ $course->name }}</option>
-                    @endforeach -->
-                    <option value="">select Nationality</option>
+                  <select class="form-control select2" placeholder=" Select a Nationality " name="nationality" style="width: 100%;" required>
+                    <option value="">Select Nationality</option>
                     <option>Ugandan<n/option>
                     <option>Kenyan</option>
                     <option>S.Sudanise</option>
@@ -192,31 +167,92 @@
               </div>
             </div>
 
-            <h5>1.4 PARENTS/GUARDIAN’S (next of kin) CONTACT</h5>
+            <h5>1.4 NEXT OF KIN CONTACT</h5>
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="father_name">Father's (Guardian) Name:</label>
-                  <input type="father_name" class="form-control" name="father_name" id="father_name" required>
+                  <label for="father_name">Next of kin (1) Name:</label>
+                  <input type="father_name" class="form-control" name="nextOfKin1Name" id="nextOfKin1ContactName" required>
                 </div>
         
                 <div class="form-group">
-                  <label for="father_contact">Father's (Guardian) Contact:</label>
-                  <input type="tel" class="form-control" name="father_contact" id="father_contact" required>
+                  <label for="father_contact">Next of kin (1) Contact:</label>
+                  <input type="tel" class="form-control" name="nextOfKin1Contact" id="nextOfKin1Contact" required>
                 </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (1) e-mail:</label>
+                  <input type="email" class="form-control" name="nextOfKin1Email" id="nextOfKin1Email" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (1) Address:</label>
+                  <input type="address" class="form-control" name="nextOfKin1Address" id="nextOfKin1Address" required>
+                </div>
+
               </div>
+
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="mother_name">Mother's (Guardian) Name:</label>
-                  <input type="text" class="form-control" name="mother_name" id="mother_name" required>
+                  <label for="mother_name">Next of kin (2) Name:</label>
+                  <input type="text" class="form-control" name="nextOfKin2Name" id="nextOfKin2Name" required>
                 </div>
         
                 <div class="form-group">
-                  <label for="mother_contact">Mother (Guardian) Contact:</label>
-                  <input type="tel" class="form-control" name="mother_contact" id="mother_contact" required>
+                  <label for="mother_contact">Next of kin (2) Contact:</label>
+                  <input type="tel" class="form-control" name="nextOfKin2Contact" id="nextOfKin2Contact" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (2) e-mail:</label>
+                  <input type="email" class="form-control" name="nextOfKin2Email" id="nextOfKin2Email" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (2) Address:</label>
+                  <input type="address" class="form-control" name="nextOfKin2Address" id="nextOfKin2Address" required>
                 </div>
               </div>
             </div>
+
+            <h5>1.3: ACADEMIC BACKGROUND</h5>
+            <div class="row">
+              <div class="col-md-12">
+              <div class="form-group">
+                  <label for="nationality">Qualification:</label>
+                  <select class="form-control select2" placeholder=" Select a qualification " name="qualification" style="width: 100%;" required>
+                    <option value="">Select Qualification</option>
+                    <option>Primary</option>
+                    <option>Lower Secondary - Ordinary Level</option>
+                    <option>Upper Secondary - Advanced Level</option>
+                    <option>Vocational/Technical</option>
+                    <option>Bachelor</option>
+                    <option>Master</option>
+                    <option>Doctorate</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="phone_1">Year of Study:</label>
+                  <select  class="form-control select2"  placeholder= "year" name="yearOfStudy" id="yearOfStudy" style="width: 100%;"  required> 
+                    <option value="">Select Year Of Study</option>
+                    <option value="{!! Form::selectYear('year', 1900, 2022) !!}</option>
+                  </select>               
+                </div>
+
+                <div class="form-group">
+                  <label for="phone_2">Institution:</label>
+                  <input type="text" class="form-control" name="institution" id="institution" required>                 
+                </div>
+
+                <div class="form-group">
+                  <label for="phone_2">Specialization:</label>
+                  <input type="text" class="form-control" name="specialization" id="specialization" required>                 
+                </div>
+              </div>
+            </div>
+
+
+
 
                 <div class="form-group">
                   <label for="image">Choose Profile Image</label>
@@ -246,6 +282,10 @@
   </section>
   <!-- /.content -->
 </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" 
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -262,13 +302,6 @@
     }
   }
   </script>
-  @if(Session::has('student_added'))
-    <script>
-      swal("Congratulations!","{!! Session::get('student_added') !!}","success",{
-        button:"OK",
-      })
-    </script>
-    
-  @endif
-<!-- /.content-wrapper -->
+
+
 @endsection
