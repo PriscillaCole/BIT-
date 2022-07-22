@@ -16,10 +16,16 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('amount')->default(0);
-            $table->foreignId('registration_id');
-            $table->string('receipt_id')->default('');
+            $table->string('currency');
+            $table->bigInteger('balance')->nullable();
+            $table->string('reason');
+            $table->string('mode');
+            $table->foreignId('payment_summaries_id');
+            $table->integer('receipt_id')->default(0);
+            $table->string('received_by');
             $table->timestamps();
-        });
+           
+           });
     }
 
     /**

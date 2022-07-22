@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('country');
@@ -29,15 +29,15 @@ class CreateUsersTable extends Migration
             $table->string('profileImage')->default('default.jpg');
             $table->string('religion')->default('');
             $table->string('marital_status')->default('');
-            $table->string('spouse_name')->default('');
-            $table->string('spouse_contact')->default('');
+            $table->string('spouse_name')->nullable();
+            $table->string('spouse_contact')->nullable();
             $table->enum('disability', ['Yes', 'No']);
-            $table->string('nature_of_disability')->default('');
+            $table->string('nature_of_disability')->nullable();
             $table->string('role')->default('Super User');
-            $table->string('father_name')->default('');
-            $table->string('father_contact')->default('');
-            $table->string('mother_name')->default('');
-            $table->string('mother_contact')->default('');
+            $table->string('father_name')->default('')->nullable();
+            $table->string('father_contact')->default('')->nullable();
+            $table->string('mother_name')->default('')->nullable();
+            $table->string('mother_contact')->default('')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

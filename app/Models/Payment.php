@@ -13,13 +13,14 @@ class Payment extends Model
 
     protected $fillable = [ 
         'amount',
-        'registration_id',
-        'receipt_id',
-        'academic_year',
-        'semster',
+        'reason',
+        'mode',
+        'balance',
         'currency',
-        'studentID',
-
+        'payment_summaries_id',
+        'receipt_id',
+        'received_by'
+        
     ];
 
     public function registration(){
@@ -28,6 +29,9 @@ class Payment extends Model
 
     public function accountant(){
         return $this->belongsTo(Accountant::class);
+    }
+    public function finance(){
+        return $this->hasOne(financeStructure::class);
     }
     
 

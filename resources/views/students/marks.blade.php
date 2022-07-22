@@ -124,52 +124,51 @@
                 </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <h5>Course Unit Code</h5>
                   </div>
-                  <div class="col-md-4">
-                    <h7>course unit Name</h7>
-                  </div>
                   <div class="col-md-2">
-                    <h7>marks</h7>
+                    <h5>course unit Name</h5>
                   </div>
                   <div class="col-md-1">
-                    <h7>CU</h7>
+                    <h5>exam</h5>
+                  </div>
+                  <div class="col-md-1">
+                    <h5>test</h5>
                   </div>
                   <div class="col-md-2">
-                    <h7>Remarks</h7>
+                    <h5>total score</h5>
+                  </div>
+                  <div class="col-md-1">
+                    <h5>CU</h5>
+                  </div>
+                  <div class="col-md-3">
+                    <h5>Remarks</h5>
                   </div>
 
                 </div>
-                @foreach($courses as $cour)
+                @foreach($stud_marks as $mark)
                 <div class="row">
-                  <div class="col-md-3">
-                    <h5>{{$cour->course_unit_code}}</h5>
-                  </div>
-                  <div class="col-md-4">
-                    <h7>{{$cour->course_name}}</h7>
+                  <div class="col-md-2">
+                    <h5>{{$mark->course_unit_code}}</h5>
                   </div>
                   <div class="col-md-2">
-                    @if($stud_marks)
-                      @foreach($stud_marks as $mark)
-                          <!-- @if($mark->course_unit_code==$cour->course_unit_code) -->
-                            @if($mark->score !=='')
-                              <h7>{{$mark->score}}</h7>
-                            @else
-                              --
-
-                            @endif
-                          <!-- @endif -->
-                        @endforeach
-                        @else
-                      --
-                    @endif
+                    <h5>{{$mark->course_name}}</h5>
                   </div>
                   <div class="col-md-1">
-                    <h7>CU</h7>
+                    <h5>{{ $mark->exam }}</h5>
+                  </div>
+                  <div class="col-md-1">
+                    <h5>{{ $mark->test }}</h5>
                   </div>
                   <div class="col-md-2">
-                    <h7>Remarks</h7>
+                    <h5>{{ $mark->total_score }}</h5>
+                  </div>
+                  <div class="col-md-1">
+                    <h5>{{ $mark->CU }}</h5>
+                  </div>
+                  <div class="col-md-3">
+                    <h5>Remarks</h5>
                   </div>
 
 
@@ -193,16 +192,16 @@
                     <h5>Course Unit Code</h5>
                   </div>
                   <div class="col-md-4">
-                    <h7>course unit Name</h7>
+                    <h5>course unit Name</h5>
                   </div>
                   <div class="col-md-2">
-                    <h7>marks</h7>
+                    <h5>marks</h5>
                   </div>
                   <div class="col-md-1">
-                    <h7>CU</h7>
+                    <h5>CU</h5>
                   </div>
                   <div class="col-md-2">
-                    <h7>Remarks</h7>
+                    <h5>Remarks</h5>
                   </div>
 
                 </div>

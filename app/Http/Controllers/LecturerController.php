@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Student;
 use App\Models\Registration;
 use App\Models\Course;
@@ -33,10 +33,25 @@ class LecturerController extends Controller
         $this->authorize('viewAny', Student::class);
 
         $students = Lecturer::all();
+    
         // dd($students);
         return view('lecturers.index', compact('students'));
     }
 
+
+    public function findLecturerDetails(Request $request){
+        $query = Lecturer::select('users.*','lecturers.*')
+        ->where('lecturers.id',$request->user_id)
+        ->join('users', 'lecturers.user_id','=', 'users.id')
+        ->first();
+ 
+         $data = array(
+             'data'  => $query,
+            );
+           
+ 
+         return response()->json($data);
+     }
     /**
      * Show the form for creating a new resource.
      *
@@ -51,7 +66,7 @@ class LecturerController extends Controller
     }
 
     public function my_courses(){
-        $asign=Lecture_Course_units::where(['user_id'=>auth()->user()->id])->get();
+        $asign = Lecture_course_units::where(['user_id'=>auth()->user()->id])->get();
         $coursesunit = Course_unit::all();
         $courses=Course::all();
         return view('lecturers.Lecture_courses', compact('coursesunit','asign','courses'));
@@ -75,7 +90,16 @@ class LecturerController extends Controller
             $imageName = time().'.'.$image->extension();
             $image->move(public_path('images'),$imageName);
         }
+        
+        $user = User::where([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+        ])->first();
 
+        if($user){
+            return redirect()->route('lecturers.create')->with('error','Lecturer already exists');
+        }
+        else{
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -105,25 +129,39 @@ class LecturerController extends Controller
         ]);
 
         $user_id =  $user->id;
-        $intake = $request->intake;
-        $delivery = $request->delivery;
         $sponsorship = $request->sponsorship;
+        $nextOfKin1Name = $request->nextOfKin1Name;
+        $nextOfKin1Contact = $request->nextOfKin1Contact;
+        $nextOfKin1Email = $request->nextOfKin1Email;
+        $nextOfKin1Address = $request->nextOfKin1Address;
+        $nextOfKin2Name = $request->nextOfKin2Name;
+        $nextOfKin2Contact = $request->nextOfKin2Contact;
+        $nextOfKin2Email = $request->nextOfKin2Email;
+        $nextOfKin2Address = $request->nextOfKin2Address;
+        $qualification = $request->qualification;
+        $yearOfStudy = $request->yearOfStudy;
+        $institution = $request->institution;
+        $specialzation = $request->specialzation;
 
-        //Save Student Details
+        //Save lecturer Details
         $student = new Lecturer();
         $student->user_id = $user_id;
-        $student->intake = $intake;
-        // $student->academic_year = (new StudentController)->semster($student)[0];
-        $student->delivery = $delivery;
-        $student->EmployID = "BIT" .'/'.rand(2,'9999');
+        $student->nextOfKin1Name = $nextOfKin1Name;
+        $student->nextOfKin1Contact = $nextOfKin1Contact;
+        $student->nextOfKin1Email = $nextOfKin1Email;
+        $student->nextOfKin1Address = $nextOfKin1Address;
+        $student->nextOfKin2Name = $nextOfKin2Name;
+        $student->nextOfKin2Contact = $nextOfKin2Contact;
+        $student->nextOfKin2Email = $nextOfKin2Email;
+        $student->nextOfKin2Address = $nextOfKin2Address;
+        $student->qualification = $qualification;
+        $student->yearOfStudy = $yearOfStudy;
+        $student->institution = $institution;
+        $student->specialzation = $specialzation;
+        // $student->EmployID = "BIT" .'/'.rand(2,'9999');
+        $student->EmployID = (new LecturerController)->lecturerID($student);
         $student->save();
 
-        //Save assigned course unit Details
-        $lecturer = new Lecture_Course_units();
-        $lecturer->user_id = $user_id;
-        $lecturer->course_unit_code = $request->course;
-        $lecturer->email = $request->email;
-        $lecturer->save();
 
          // Add activity logs
          $userlog = Auth::user();
@@ -134,9 +172,10 @@ class LecturerController extends Controller
          ->log('Lecturer details saved by ' . $userlog->name);
 
 
-        return back()->with('student_added','Lecture record has been saved');
+        return redirect()->route('lecturer-cu')->with('success','Lecture record has been saved,assign course unit');
 
     }
+}
 
     /**
      * Display the specified resource.
@@ -151,6 +190,7 @@ class LecturerController extends Controller
         $accountants = User::where('role', 'Accountant')->get();
         $courses = Course::all();
         $announcements = Announcement::latest()->get();
+       $asign = Lecture_Course_units::where(['user_id'=>auth()->user()->id])->get();
         return view('lecturers.show', compact('students','accountants','courses', 'announcements'));
     }
 
@@ -165,10 +205,17 @@ class LecturerController extends Controller
     {
         //Display edit form for students
 
-        $lect = Lecturer::findOrFail($id);
-        $admin = User::findOrFail($lect['user_id']);
+        $admin = User::findOrFail($id);
+        $lect = Lecturer::findOrFail($admin['id']);
+        $courses = Lecture_Course_units::firstWhere('user_id',$lect['user_id']);
+  
+        //$courses = Lecture_Course_units::where('user_id', $lect['id'])->get();
+        
+       
+        
+    
         // dd($id,$admin);
-        return view('lecturers.edit', compact('student','admin'));
+        return view('lecturers.edit', compact('admin','lect', 'courses'));
     }
 
     /**
@@ -181,6 +228,7 @@ class LecturerController extends Controller
     public function update(Request $request, Lecturer $student)
     {
         //Update Lecturer Record
+    
         $id = $student->user_id;
         $user = User::find($request->id);
         // dd($request->all());
@@ -197,17 +245,34 @@ class LecturerController extends Controller
          $user->spouse_contact = $request->input('spouse_contact');
          $user->disability  = $request->input('disability');
          $user->nature_of_disability = $request->input('nature_of_disability');
-         $user->father_name = $request->input('father_name');
-         $user->father_contact = $request->input('father_contact');
-         $user->mother_name = $request->input('mother_name');
-         $user->mother_contact = $request->input('mother_contact');
          $user->Town = $request->input('Town');
          $user->postal = $request->input('postal');
          $user->district = $request->input('district');
          $user->country = $request->input('country');
          $user->nationality = $request->input('nationality');
 
-        if($request->file('file')) {
+
+         $user2 = Lecturer::find($request->id);
+         $user2->nextOfKin1Name = $request->input('nextOfKin1Name');
+         $user2->nextOfKin1Contact = $request->input('nextOfKin1Contact');
+         $user2->nextOfKin1Email = $request->input('nextOfKin1Email');
+         $user2->nextOfKin1Address = $request->input('nextOfKin1Address');
+         $user2->nextOfKin2Name = $request->input('nextOfKin2Name');
+         $user2->nextOfKin2Contact = $request->input('nextOfKin2Contact');
+         $user2->nextOfKin2Email = $request->input('nextOfKin2Email');
+         $user2->nextOfKin2Address = $request->input('nextOfKin2Address');
+         $user2->qualification = $request->input('qualification');
+         $user2->yearOfStudy = $request->input('yearOfStudy');
+         $user2->institution = $request->input('institution');
+         $user2->specialzation = $request->input('specialzation');
+          
+        
+        $user3 =  Lecture_Course_units::firstWhere('user_id',($request->id));
+         //$user3->course_unit_code = $request->input('course_unit_code');
+        $user3['course_unit_code'] = implode(", ",$request->input('CourseUnitCode'));
+        
+        
+     if($request->file('file')) {
             $old_image = public_path('images').'/'.$user->profileImage;
             if (file_exists($old_image) & $user->profileImage != 'default.jpg') {
                 unlink($old_image);
@@ -219,6 +284,8 @@ class LecturerController extends Controller
         }
 
         $user->update();
+        $user2->update();
+        $user3->update();
 
 
          // Add activity logs
@@ -231,7 +298,7 @@ class LecturerController extends Controller
 
 
 
-        return redirect()->back()
+        return redirect()->route('lecturers.index')
             ->with('success', 'Lecturer updated successfully.');
     }
 
@@ -319,26 +386,35 @@ class LecturerController extends Controller
     }
 
 
-    public function studentID(Lecturer $student)
+    public function lecturerID(Lecturer $student)
     {
         //Generating student id
-        //Count the number of a students in a given academic year and intake
-        $intake_students = Lecturer::where('academic_year',$student->academic_year)
-            ->where('intake', $student->intake)->get()->count();
+        $model = new Lecturer;
+        $trow = 'lecturerID';
+        $prefix = 'BIT';
+        $length = 2;
+        $count =  $model->count();
+        $data = $model::orderBy('id', 'desc')->first();
+        error_log($count);
 
-        $student_number = sprintf("%03d", $intake_students + 1);
-
-        $year = substr($student->academic_year, 2, 2);
-
-        if ($student->intake == 'January') {
-            $month = '01';
-        } else if ($student->intake == 'May') {
-            $month = '05';
-        } else {
-            $month = '09';
+       
+        if(!$data){
+            $og_length = $length;
+            $last_number = sprintf("%03d", 1);
+        }else{
+            $code = substr($data->$trow, strlen($prefix)+1);
+            $actual_last_number = ((int)$code/1)*1;
+           
+            $last_number =sprintf("%03d", $count + 1);
+            // $last_number = sprintf("%03d", $increment_last_number);
         }
 
-        $studentID = "BIT/".$year."/".$month."/".$student_number;
-        return $studentID;
+        
+
+        $lecturerID = "BIT/".$last_number;
+        return $lecturerID;
     }
+
+
+    
 }

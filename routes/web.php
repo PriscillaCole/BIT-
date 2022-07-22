@@ -16,6 +16,8 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\HelperController;
+use App\Http\Controllers\FinanceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,6 @@ use App\Http\Controllers\HelperController;
 |
 */
 
-Route::get('test', [HelperController::class, 'index']);
 
 
 Route::get('/profile', function () {
@@ -43,14 +44,21 @@ Route::get('/', function () {
 Route::group(['middleware'=>['auth']], function(){
     Route::get('getstudentID', [PaymentsController::class,'getstudentID'])->name('getstudentID');
     Route::get('findstud', [PaymentsController::class,'getstudentID']);
+    Route::get('/payment_details',[PaymentController::class,'findPaymentDetails'])->name('payment_details');
     Route::resource('student', StudentController::class);
     Route::resource('lectural', LecturerController::class);
     Route::resource('lecturer', LecturerController::class);
+
     Route::resource('marks', MarksController::class);
+    Route::get('/getStudentsByCourse', [MarksController::class,'findStudentsByCourseUnit']);
     Route::resource('accountant', AccountantController::class);
     Route::resource('admin', AdminController::class);
     Route::resource('course', CourseController::class);
+    Route::get('/show', [StudentController::class, 'show'])->name('students.show');
+    Route::get('/create', [StudentController::class, 'create'])->name('students.create');
+
     Route::get('/student-marks',[StudentController::class,'Stud_marks'])->name('Stud_marks');
+    Route::get('/student_details',[StudentController::class,'findStudentDetails'])->name('student_details');
     Route::get('/test-marks',[MarksController::class,'createTest'])->name('createTest');
     Route::post('marksing.update',[MarksController::class,'marksing_update'])->name('marksing.update');
     Route::get('student-marks/{id}',[MarksController::class,'marksing_u'])->name('marks.edits');
@@ -64,6 +72,8 @@ Route::group(['middleware'=>['auth']], function(){
         return view('payment.create', compact('student'));
     })->name('pay');
     Route::get('/payment/{student}/payments', [PaymentController::class, 'studentPayment'])->name('payments');
+
+    Route::get('/semesterFees', [PaymentController::class,'findSemesterFees']);
 });
 
 Route::group(['middleware'=>['auth'],'prefix'  =>   'Course-Unit'], function() {
@@ -85,6 +95,7 @@ Route::group(['middleware'=>['auth'],'prefix'  =>   'Lecturer'], function() {
     Route::get('/edit/{id}', [LecturerController::class,'edit'])->name('lecturers.edit');
     Route::post('/lecturers/update', [LecturerController::class,'update'])->name('lecturers.update');
     Route::get('/delete', [LecturerController::class, 'delete()'])->name('lecturers.destroy');
+    Route::get('/lecturer_details',[LecturerController::class,'findLecturerDetails']);
 
 });
 
@@ -130,3 +141,16 @@ Route::post('/send-message',[ContactController::class,'sendEmail'])->name('conta
 Route::get('/contact-us', function () {
     return view('contact-us');
 })->name('contact-us');
+
+//Route for Financial academic year
+Route::group(['middleware'=>['auth'],'prefix'  =>   'Finance'], function() {
+Route::get('/', [FinanceController::class, 'index'])->name('finances.index');
+Route::get('/create', [FinanceController::class, 'create'])->name('finances.create');
+Route::post('/store', [FinanceController::class,'store'])->name('finances.store');
+Route::get('/edit/{id}', [FinanceController::class,'edit'])->name('finances.edit');
+Route::post('/update', [FinanceController::class,'update'])->name('finances.update');
+Route::post('/delete', [FinanceController::class,'destroy'])->name('finances.destroy');
+
+
+
+});

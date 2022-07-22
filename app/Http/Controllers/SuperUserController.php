@@ -86,26 +86,68 @@ class SuperUserController extends Controller
         //
         return view('superUser.lecturer-cu');
     }
+  /* public function storelecturer_cu(Request $request)
+    {
+
+        $user = User::where(['email'=>$request->studentID])->first();
+        
+        $user['course_unit_code'] = json_encode( $request->input('CourseUnitCode'));
+        
+        $course = Lecture_Course_units::create([
+            'email' => $request->input('studentID'),
+            'user_id' => $user['id'],
+            'course_unit_code'=>$user['course_unit_code'],
+            
+    ]);*/
+
+
     public function storelecturer_cu(Request $request)
     {
 
         $user = User::where(['email'=>$request->studentID])->first();
-        // dd($request->all(), $user['id']);
-        $course = Lecture_Course_units::create([
+        
+        $course_units = $request->input('CourseUnitCode');
+        foreach ($course_units as $course_unit) {
+            $course = Lecture_Course_units::create([
+                'email' => $request->input('studentID'),
+                'user_id' => $user['id'],
+                'course_unit_code'=>$course_unit
+            ]);
+        }        
+
+
+
+    
+
+    
+
+
+
+    /*    public function storelecturer_cu(Request $request)
+    {
+        $user =  User::where(['email'=>$request->studentID])->first();
+        
+        $data = array( json_encode([
             'email' => $request->input('studentID'),
             'user_id' => $user['id'],
             'course_unit_code'=>$request->input('CourseUnitCode'),
-        ]);
+        ]));
+ 
+        Lecture_Course_units::create($data);
+ 
+      //  return response()->json(['success'=>'Recoreds inserted']);      
+    */
 
          // Add activity logs
-         $userlog = Auth::user();
+        $userlog = Auth::user();
          activity('course unit assignment')
          ->performedOn($course)
          ->causedBy($userlog)
          //->withProperties(['customProperty' => 'customValue'])
          ->log('Course unit has been assigned' . $userlog->name);
+    
 
-        return redirect()->back()->with('message','Course unit has been assigned');
+       return redirect()->back()->with('message','Course unit has been assigned');
     }
 
     /**
@@ -326,14 +368,16 @@ class SuperUserController extends Controller
          $user->country = $request->input('country');
          $user->district = $request->input('district');
 
-
-
-         if($request->has("photo")){
-             $photo = request()->file('photo');
-             $imageName = time().'.'.$photo->getClientOriginalExtension();
-             $photo->move(public_path('images'), $imageName);
-             $user->profileImage =$imageName;
-         }
+         if($request->file('file')) {
+            $old_image = public_path('images').'/'.$user->profileImage;
+            if (file_exists($old_image) & $user->profileImage != 'default.jpg') {
+                unlink($old_image);
+            }
+            $image = $request->file('file');
+            $imageName = time().'.'.$image->extension();
+            $image->move(public_path('images'),$imageName);
+            $user->profileImage = $imageName;
+        }
 
          $user->update();
          // Add activity logs
@@ -345,19 +389,6 @@ class SuperUserController extends Controller
             ->log('User details updated by ' . $userlog->name);
 
          return redirect()->back()->with('success', 'User details updated successfully.');
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SuperUser  $superUser
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SuperUser $superUser)
-    {
-        //
     }
 
     /**
@@ -432,12 +463,15 @@ class SuperUserController extends Controller
         $user->country = $request->input('Country');
 
 
-
-        if($request->has("photo")){
-            $photo = request()->file('photo');
-            $imageName = time().'.'.$photo->getClientOriginalExtension();
-            $photo->move(public_path('images'), $imageName);
-            $user->profileImage =$imageName;
+        if($request->file('file')) {
+            $old_image = public_path('images').'/'.$user->profileImage;
+            if (file_exists($old_image) & $user->profileImage != 'default.jpg') {
+                unlink($old_image);
+            }
+            $image = $request->file('file');
+            $imageName = time().'.'.$image->extension();
+            $image->move(public_path('images'),$imageName);
+            $user->profileImage = $imageName;
         }
 
         $user->update();

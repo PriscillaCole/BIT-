@@ -20,8 +20,9 @@ class CreateStudentsTable extends Migration
             $table->string('academic_year')->default('');
             $table->foreignId('user_id');
             $table->foreignId('course_id');
+            $table->string('course')->default('');
             $table->string('optional_course')->default('');
-            $table->enum('delivery',['Weekend', 'Distance Learning']);
+            $table->enum('delivery',['Physical', 'Online/Distance Learning']);
             $table->string('sponsorship')->default('');
             $table->timestamps();
         });

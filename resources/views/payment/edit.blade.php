@@ -42,12 +42,12 @@
                   <div class="form-group col-md-6">
                     <label for="semster">Semster:</label>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="semster" id="name" value=1 {{ $payment->registration->semster == 1 ? 'checked' : ''}} disabled>
-                      <label style="margin-left: 20px;"  class="form-check-label">One</label>
+                      <input class="form-check-input" type="radio" name="semster" id="name" value= "I" {{ $payment->registration->semster == 1 ? 'checked' : ''}} disabled>
+                      <label style="margin-left: 20px;"  class="form-check-label">I</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="semster" id="name" value=2 {{ $payment->registration->semster == 2 ? 'checked' : ''}} disabled>
-                      <label style="margin-left: 20px;"  class="form-check-label">Two</label>
+                      <input class="form-check-input" type="radio" name="semster" id="name" value="II" {{ $payment->registration->semster == 2 ? 'checked' : ''}} disabled>
+                      <label style="margin-left: 20px;"  class="form-check-label">II</label>
                     </div>
                   </div>
                 </div>

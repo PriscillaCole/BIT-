@@ -23,15 +23,43 @@
           </div>
         </div>
         @endif
+
+        @if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+      @endif
+
         <form action="{{ route ('student.store') }}" enctype="multipart/form-data" method="post">
           @csrf
           <div class="card-body">
+
+            <div class="form-group" id="country">
+              <label for="country">Country of residence:</label>
+              <select class="form-control select2" placeholder="Select a Country" name="country" style="width: 100%;" required>
+                <!-- @foreach ($courses as $course)
+                  <option>{{ $course->name }}</option>
+                @endforeach -->
+                <option value="">Select Country</option>
+                <option>Uganda</option>
+                <option>Kenya</option>
+                <option>Sudan</option>
+                <option>Rwanda</option>
+                <option>Tanzania</option>
+                <option>Burundian</option>
+                <option>Eritrea</option>
+                <option>DRC</option>
+                <option>Somalia</option>
+              </select>
+            </div>
+
             <h5>Choice Of Intake</h5>
             <div class="row">
+
               <div class="col-md-12">
                 <label for="intake">Intake:</label>
                
-                <div class="form-group">
+                <div class="form-group" id="intakeForm">
                   <div class="form-check @error('intake') is-invalid @enderror">
                   
                     <input class="form-check-input" type="radio" name="intake" id="" value="January" required>
@@ -39,7 +67,7 @@
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" type="radio" name="intake" id="name" value="May" required>
-                    <label style="margin-left: 20px;" class="form-check-label">May</label>
+                    <label style="margin-left: 20px;" class="form-check-lxabel">May</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" type="radio" name="intake" id="" value="September" required>
@@ -49,41 +77,17 @@
                 </div>
               </div>
             </div>
-
-            <h5>SECTION 1</h5>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="course">Programme being applied for:</label>
-                  <select class="form-control select2 @error('course') is-invalid @enderror" placeholder="Select a course" name="course" style="width: 100%;" required>
-                    @foreach ($courses as $course)
-                      <option>{{ $course->name }}</option>
-                    @endforeach
-                  </select>
-                  @error('intake') {{ $message }} @enderror
-                </div>
-                <div class="form-group">
-                  <label for="optional_course">Optional Course:</label>
-                  <input type="text" class="form-control" name="optional_course" id="optional_course">
-                </div>
-                <label for="delivery">Mode of Delivery:</label>
-                <div class="form-group @error('delivery') is-invalid @enderror">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Weekend" required>
-                    <label style="margin-left: 20px;" class="form-check-label">Weekend</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Distance Learning" required>
-                    <label  style="margin-left: 20px;"class="form-check-label">Distance Learning</label>
-                  </div>
-                  @error('intake') {{ $message }} @enderror
-                </div>
-              </div>
-            </div>
-
+          
             <h5>1.1: STUDENT’S PERSONAL INFORMATION</h5>
             <div class="row">
               <div class="col-md-12">
+
+                <div class="form-group">
+                  <label for="studentID">Student Number:</label>
+                  <input type="text" class="form-control @error('studentID') is-invalid @enderror" name="studentID" id="studentID" value=""readonly>
+                  
+                  @error('studentId') {{ $message }} @enderror
+                </div>
                 <div class="form-group">
                   <label for="course">Name:</label>
                   <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" required>
@@ -107,34 +111,17 @@
                   <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" id="date_of_birth" required>
                   @error('date_of_birth') {{ $message }} @enderror
                 </div>
-                <div class="form-group">
-                  <label for="country">Country of residence:</label>
-                  <select class="form-control select2" placeholder="Select a Country" name="country" style="width: 100%;" required>
-                    <!-- @foreach ($courses as $course)
-                      <option>{{ $course->name }}</option>
-                    @endforeach -->
-                    <option value="">select Country</option>
-                    <option>Uganda<n/option>
-                    <option>Kenya</option>
-                    <option>S.Sudan</option>
-                    <option>Rwanda</option>
-                    <option>Tanzania</option>
-                    <option>Burundian/option>
-                    <option>Eritrea</option>
-                    <option>DRC</option>
-                    <option>Somalia</option>
-                  </select>
-                </div>
+               
                 <div class="form-group">
                   <label for="nationality">Nationality:</label>
                   <select class="form-control select2" placeholder="Select a Nationality" name="nationality" style="width: 100%;" required>
                     <!-- @foreach ($courses as $course)
                       <option>{{ $course->name }}</option>
                     @endforeach -->
-                    <option value="">select Nationality</option>
-                    <option>Ugandan<n/option>
+                    <option value="">Select Nationality</option>
+                    <option>Ugandan</option>
                     <option>Kenyan</option>
-                    <option>S.Sudanise</option>
+                    <option>Sudanese</option>
                     <option>Rwandan</option>
                     <option>Tanzanian</option>
                     <option>Burundian</option>
@@ -152,13 +139,25 @@
                   <input type="text" class="form-control" name="Town" id="Town" required>
                 </div>
                 <div class="form-group">
-                  <label for="postal">P.O BOX:</label>
+                  <label for="postal">P.O Box:</label>
                   <input type="text" class="form-control" name="postal" id="postal" required>
                 </div>
+               
+
                 <div class="form-group">
                   <label for="religion">Religion:</label>
-                  <input type="text" class="form-control" name="religion" id="religion" required>
+                  <select class="form-control select2" placeholder="Select Religion" name="religion" id="religion" style="width: 100%;" required>
+                    
+                    <option value="">Select Religion</option>
+                    <option>Anglican/Protestant</option>
+                    <option>Muslim</option>
+                    <option>Pentecost</option>
+                    <option>Catholic</option>
+                    <option>Other</option>
+                    
+                  </select>
                 </div>
+
                 <div class="form-group @error('marital_status') is-invalid @enderror">
                   <label for="marital_status">Marital Status:</label>
                   
@@ -214,6 +213,57 @@
               </div>
             </div>
 
+
+            
+           
+
+            <h5>SECTION 1</h5>
+            <div class="row">
+              <div class="col-md-12">
+
+                
+                <div class="form-group">
+                  <label for="course">Programme Being Applied For:</label>
+                  <select class="form-control select2 @error('course') is-invalid @enderror" placeholder="Select a course" name="course" style="width: 100%;" required>
+                    <option>Select Programme</option>
+                    @foreach ($courses as $course)
+                      <option>{{ $course->name }}</option>
+                    @endforeach
+                  </select>
+                  @error('intake') {{ $message }} @enderror
+                </div>
+               
+
+                <label for="optional-course">Option:</label>
+                <div class="form-group @error('delivery') is-invalid @enderror">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="optional_course" id="optional_course" value="Day" required>
+                    <label style="margin-left: 20px;" class="form-check-label">Day</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="optional_course" id="optional_course" value="Evening" required>
+                    <label  style="margin-left: 20px;"class="form-check-label">Evening</label>
+                  </div>
+                  @error('intake') {{ $message }} @enderror
+                </div>
+
+                <label for="delivery">Mode of Delivery:</label>
+                <div class="form-group @error('delivery') is-invalid @enderror">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Physical" required>
+                    <label style="margin-left: 20px;" class="form-check-label">Physical</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Online/Distance Learning" required>
+                    <label  style="margin-left: 20px;"class="form-check-label">Online/Distance Learning</label>
+                  </div>
+                  @error('intake') {{ $message }} @enderror
+                </div>
+              </div>
+            </div>
+
+           
+
             <h5>1.3: STUDENT’S CONTACT</h5>
             <div class="row">
               <div class="col-md-12">
@@ -226,7 +276,7 @@
                   <input type="tel" class="form-control" name="phone_1" id="phone_1" required>                
                 </div>
                 <div class="form-group">
-                  <label for="phone_2">Alt Phone Number:</label>
+                  <label for="phone_2">Alternative Phone Number:</label>
                   <input type="tel" class="form-control" name="phone_2" id="phone_2" required>                 
                 </div>
               </div>
@@ -264,8 +314,8 @@
                 <div class="form-group">
                   <label for="sponsorship">Please indicate details of any scholarships, or Grant relating to the course for which you are applying.</label>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sponsorship" id="sponsorship" value="Government" required>
-                    <label style="margin-left: 20px;" class="form-check-label">Government/Ministry</label>
+                    <input class="form-check-input" type="radio" name="sponsorship" id="sponsorship" value="Scholarship/funded" required>
+                    <label style="margin-left: 20px;" class="form-check-label">Scholarship/Funded</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="sponsorship" id="sponsorship" value="Private" required>
@@ -316,6 +366,44 @@
       reader.readAsDataURL(file);
     }
   }
+
+  const generateID = (year, intake, country, student_total) => {
+    // const student_number = parseInt(student_total)+1
+    return "BIT"+"/"+year.toString()+"/"+"0"+intake.toString()+"/"+country.toString()+"/"+student_total
+  }
+
+  document.getElementById("intakeForm").addEventListener('click', function(event) {
+    const student_number = "{{ $studentid }}"
+    if(event.target.value === "January"){
+      intakeValue = 1
+    }
+    if(event.target.value === "May"){
+      intakeValue = 5
+    }
+    if(event.target.value === "September"){
+      intakeValue = 9
+    }
+    const id = generateID(22, intakeValue, countryValue, student_number)
+    document.getElementById("studentID").value = id
+  })
+
+  document.getElementById("country").addEventListener('input', function(event) {
+    const student_number = "{{ $studentid }}"
+    if(event.target.value === "Uganda"){
+      countryValue = "U"
+    }
+    else{
+      countryValue = "X"
+    }
+   
+    const id = generateID(22, intakeValue, countryValue, student_number)
+    document.getElementById("studentID").value = id
+  })
+
+
+
+
+
   </script>
   @if(Session::has('student_added'))
     <script>

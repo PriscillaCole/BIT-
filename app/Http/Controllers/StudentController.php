@@ -44,12 +44,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $this->authorize('create', Student::class);
         //create a new students
         $courses = Course::all();
-        return view('students.create', compact('courses'));
+        $student = new Student();
+        $studentid=(new StudentController)->studentID($student);
+       return view('students.create', compact('courses', 'studentid'));
     }
 
     public function Stud_marks(Student $student)
@@ -62,11 +64,16 @@ class StudentController extends Controller
         $registrations = Registration::where('student_id', $studentd->id)->first();
         $Course = Course::where(['id'=>$studentd->course_id])->first();
         $courses = Course_unit::where(['course_code'=>$Course->code])->get();
-        $marks = Marks::all();
-        $stud_marks = Marks::where(['studentID'=>$studentd->studentID])->get();
+        // $marks = Marks::all();
+        // $stud_marks = Marks::where(['studentID'=>$studentd->studentID])->get();
+
+        $stud_marks = Marks::select('marks.*', 'course_units.*')
+       ->where('studentId',$studentd->studentID)
+       ->join('course_units', 'marks.course_unit_id','=', 'course_units.id')
+       ->get();
 
         // dd($stud_marks,$courses);
-        return view('students.marks', compact('student','marks','stud_marks', 'registrations','Course','studentd','courses'));
+        return view('students.marks', compact('student','stud_marks', 'registrations','Course','studentd','courses'));
     }
 
     /**
@@ -102,6 +109,17 @@ class StudentController extends Controller
             $image->move(public_path('images'),$imageName);
         }
 
+        $user = User::where([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+           
+       ])->first();
+
+        if($user){
+            return redirect()->route('students.create')->with('error','Student already exists');
+               
+        }else{
+
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -129,13 +147,16 @@ class StudentController extends Controller
             'profileImage' => $imageName,
 
         ]);
+    }
 
         $user_id =  $user->id;
         $intake = $request->intake;
         $course_id = $course_id;
+        $course = $request->course;
         $optional_course = $request->optional_course;
         $delivery = $request->delivery;
         $sponsorship = $request->sponsorship;
+        $studentID = $request->studentID;
 
         //Save Student Details
         $student = new Student();
@@ -143,12 +164,14 @@ class StudentController extends Controller
         $student->intake = $intake;
         $student->academic_year = (new StudentController)->semster($student)[0];
         $student->course_id = $course_id;
+        $student->course = $course;
         $student->optional_course = $optional_course;
         $student->delivery = $delivery;
         $student->sponsorship = $sponsorship;
-       //$student->studentID = Helper::IDGenerator(new Student, 'studentID', 2, 'BIT');
-        $student->studentID = (new StudentController)->studentID($student);
+        $student->studentID = $studentID;
+    //    $student->studentID = (new StudentController)->studentID($student);
         $student->save();
+        $user->save();
          // Add activity logs
          $stud_id = Student::latest()->first();
          // dd($stud_id,$user_id,$stud_id->user_id,User::latest()->first());
@@ -206,24 +229,44 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $this->authorize('view', $student);
+        // $this->authorize('view', $student);
 
         //Show Student
-        if (is_null(Payment::where(['studentID'=>$student->studentID])->latest()->first())) {
-            # code...
-             dd($student,Course::where(['id'=>$student->course_id])->latest()->first()->fees);
-           $amt=0;
-            $rep="BIT/000";
-        }else {
-            dd($student);
-           $amt=Payment::where(['studentID'=>$student->studentID])->latest()->first()->amount;
-           $rep=Payment::where(['studentID'=>$student->studentID])->latest()->first()->receipt_id;
-        }
+        // if (is_null(Payment::where(['studentID'=>$student->studentID])->latest()->first())) {
+        //     # code...
+        //      dd($student,Course::where(['id'=>$student->course_id])->latest()->first()->fees);
+        //    $amt=0;
+        //     $rep="BIT/000";
+        // }else {
+        //     dd($student);
+        //    $amt=Payment::where(['studentID'=>$student->studentID])->latest()->first()->amount;
+        //    $rep=Payment::where(['studentID'=>$student->studentID])->latest()->first()->receipt_id;
+        // }
         
         
-        $registrations = Registration::where('student_id', $student->id)->get();
-       return view('students.show', compact('student', 'registrations','amt','rep'));
+        $student = Registration::select('users.*', 'registrations.*','students.*')
+        ->where('student_id', $student->id)
+        ->join('students', 'registrations.student_id', '=', 'students.id', )
+        ->join('users', 'students.user_id','=', 'users.id')
+        ->first();
+
+       return view('students.show', compact('student'));
     }
+
+    public function findStudentDetails(Request $request){
+       // $query=Student::where('id',$request->id)->first();
+       $query = Student::select('users.*', 'registrations.*','students.*')
+       ->where('students.id',$request->id)
+       ->join('users', 'students.user_id','=', 'users.id')
+       ->join('registrations', 'students.id','=', 'registrations.student_id')
+       ->first();
+
+        $data = array(
+            'data'  => $query,
+           );
+
+    	return response()->json($data);
+	}
 
 
     /**
@@ -247,6 +290,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+
         //Update Student Record
         // dd($request->all());
         $id = $student->user_id;
@@ -254,6 +298,7 @@ class StudentController extends Controller
         $stu=Student::where([ 'user_id'=>$request->id])->first();
         Student::where([ 'user_id'=>$request->id])->update(['course_id'=>$request->course1]);
         $up=Student::where([ 'user_id'=>$request->id])->first();
+        $course = Course::firstWhere('id', $request->input('course1'))->name;
         // Payment::where([ 'studentID'=>$request->id])->update(['course_id'=>$request->course1)]);
         // dd($stu,Payment::where(['studentID'=>$stu->studentID])->first(),$request->all(),$up);
 
@@ -293,12 +338,16 @@ class StudentController extends Controller
         $user->update();
 
         $intake = $request->intake;
+        $course_id = $request->course1;
+        $course = $course;
         $optional_course = $request->optional_course;
         $delivery = $request->delivery;
         $sponsorship = $request->sponsorship;
 
         $student->intake = $intake;
         $student->optional_course = $optional_course;
+        $student->course_id = $course_id;
+        $student->course = $course;
         $student->delivery = $delivery;
         $student->sponsorship = $sponsorship;
 
@@ -313,7 +362,8 @@ class StudentController extends Controller
          ->log('student details updated by ' . $userlog->name);
 
 
-        return redirect()->route('student.show', ['student'=>$student])
+        return redirect()
+            ->route('student.index')
             ->with('success', 'Student updated successfully.');
     }
 
@@ -408,7 +458,7 @@ class StudentController extends Controller
     //students unique id
 
 
-    public function studentID(Student $student)
+   public function studentID(Student $student)
     {
         //Generating student id
         $model = new Student;
@@ -424,16 +474,13 @@ class StudentController extends Controller
        
         if(!$data){
             $og_length = $length;
-            $last_number = '001';
+            $last_number =  sprintf("%03d", 1);
         }else{
             $code = substr($data->$trow, strlen($prefix)+1);
             $actual_last_number = ((int)$code/1)*1;
-            // $last_number_length = strlen($increment_last_number);
-            // $og_length = $length - $last_number_length;
-
-
-            $increment_last_number = $count + 1;
-            $last_number = sprintf("%03d", $increment_last_number);
+           
+            $last_number =sprintf("%03d", $count + 1);
+            // $last_number = sprintf("%03d", $increment_last_number);
         }
 
         if ($student->intake == 'January') {
@@ -445,7 +492,7 @@ class StudentController extends Controller
         }
 
         $studentID = "BIT/".$year."/".$month."/".$last_number;
-        return $studentID;
+        return $last_number;
     }
 } 
 

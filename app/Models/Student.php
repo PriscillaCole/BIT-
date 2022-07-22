@@ -17,6 +17,7 @@ class Student extends Model
         'studentID',
         'intake',
         'course_id',
+        'course',
         'academic_year',
         'optional_course',
         'delivery',

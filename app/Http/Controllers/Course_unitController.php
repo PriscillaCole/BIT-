@@ -39,18 +39,36 @@ class Course_unitController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $course = Course_unit::Create([            
+        $courseunit = Course_unit::where([
             'course_name' => $request->input('name'),
             'course_code' => $request->input('course'),
             'course_unit_code'=>$request->input('code'),
-            'YearOfStudy' => $request->input('YearOfStudy'),
-            'Semester' => $request->input('Semester'),
-            'L' => $request->input('L'),
-            'P' => $request->input('P'),
-            'CH' => $request->input('CH'),
-            'CU' => $request->input('CU'),
-            'course_id' => $request->input('id')
-        ]);
+       ])->first();
+
+
+
+        if($courseunit){
+            return redirect()->route('course_unit.create')->with('error','Course unit already exists');
+               
+        }else{
+            $course_id = Course::where(['code' => $request->input('course')])->first()->id;
+
+            $course = Course_unit::Create([            
+                'course_name' => $request->input('name'),
+                'course_code' => $request->input('course'),
+                'course_unit_code'=>$request->input('code'),
+                // 'teaches' => $request->input('code').'-'. $request->input('name'),
+                'YearOfStudy' => $request->input('YearOfStudy'),
+                'Semester' => $request->input('Semester'),
+                'L' => $request->input('L'),
+                'P' => $request->input('P'),
+                'CH' => $request->input('CH'),
+                'CU' => $request->input('CU'),
+                'course_id' => $course_id
+            ]);
+
+        }
+       
 
          // Add activity logs
          $userlog = Auth::user();

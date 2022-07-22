@@ -31,7 +31,7 @@
           @csrf
           @method('PUT')
           <div class="card-body">
-            <h5>1.1: ADMIN’S'S PERSONAL INFORMATION</h5>
+            <h5>1.1: ADMIN’S PERSONAL INFORMATION</h5>
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
@@ -45,7 +45,7 @@
                   <option>{{ $admin->country }}</option>
                   @else
                     <option value="">select Country</option>
-                    <option>Uganda<n/option>
+                    <option>Uganda</option>
                     <option>Kenya</option>
                     <option>S.Sudan</option>
                     <option>Rwanda</option>
@@ -64,7 +64,7 @@
                   <option>{{ $admin->nationality }}</option>
                   @else
                     <option value="">select Nationality</option>
-                    <option>Ugandan<n/option>
+                    <option>Ugandan</option>
                     <option>Kenyan</option>
                     <option>S.Sudanise</option>
                     <option>Rwandan</option>

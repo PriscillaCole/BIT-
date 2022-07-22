@@ -18,7 +18,19 @@ class CreateLecturersTable extends Migration
             $table->string('EmployID')->default('');
             $table->foreignId('user_id');
             $table->string('academic_year')->default('');
-            $table->enum('delivery',['Weekend', 'Distance Learning']);
+            $table->string('nextOfKin1Name')->default('');
+            $table->string('nextOfKin1Contact')->default('');
+            $table->string('nextOfKin1Email')->default('');
+            $table->string('nextOfKin1Address')->default('');
+            $table->string('nextOfKin2Name')->default('');
+            $table->string('nextOfKin2Contact')->default('');
+            $table->string('nextOfKin2Email')->default('');
+            $table->string('nextOfKin2Address')->default('');
+            $table->string('qualification')->default('');
+            $table->string('yearOfStudy')->default('');
+            $table->string('institution')->default('');
+            $table->string('specialzation')->default('');
+
             $table->timestamps();
         });
     }

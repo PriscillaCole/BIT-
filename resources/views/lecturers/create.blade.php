@@ -24,6 +24,13 @@
           </div>
         </div>
         @endif
+
+        
+        @if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+      @endif
         <form action="{{ route ('lecturer.store') }}" enctype="multipart/form-data" method="post">
           @csrf
           <div class="card-body">
@@ -60,7 +67,7 @@
                       <option>{{ $course->name }}</option>
                     @endforeach -->
                     <option value="">Select Country</option>
-                    <option>Uganda<n/option>
+                    <option>Uganda</option>
                     <option>Kenya</option>
                     <option>S.Sudan</option>
                     <option>Rwanda</option>
@@ -74,7 +81,7 @@
                   <label for="nationality">Nationality:</label>
                   <select class="form-control select2" placeholder=" Select a Nationality " name="nationality" style="width: 100%;" required>
                     <option value="">Select Nationality</option>
-                    <option>Ugandan<n/option>
+                    <option>Ugandan</option>
                     <option>Kenyan</option>
                     <option>S.Sudanise</option>
                     <option>Rwandan</option>
@@ -246,7 +253,7 @@
 
                 <div class="form-group">
                   <label for="phone_2">Specialization:</label>
-                  <input type="text" class="form-control" name="specialization" id="specialization" required>                 
+                  <input type="text" class="form-control" name="specialzation" id="specialzation" required>                 
                 </div>
               </div>
             </div>

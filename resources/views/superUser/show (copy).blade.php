@@ -39,7 +39,7 @@
                         <form class="form-layout form-layout-1" action="{{route('superUser.upadte')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group my-3">
-                                <label class="form-control-label">Name: <span class="text-danger">*</span></label>
+                                <label class="form-control-label">Namesss: <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" name="name" value="{{Auth::user()->name}}" placeholder="{{__('name')}}" required>
                                 @error('name')
                                     <span class="invalid-feedback d-block" role="alert">

@@ -17,6 +17,12 @@
         {{ session()->get('message') }}
     </div>
 @endif
+
+@if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+@endif
       <!-- SELECT2 EXAMPLE -->
       <div class="card card-default">
         <div class="card-header">
@@ -42,7 +48,6 @@
                     @endforeach
                   </select>
                 </div>
-                <input type="hidden" name="id" value="{{ $course->id }}">
                 <div class='row'>
 
                 <div class="col-md-6 form-group">

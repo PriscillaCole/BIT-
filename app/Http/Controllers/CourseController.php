@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Finances;
 use Illuminate\Http\Request;
+use App\Http\Controllers\FinanceController;
 use Auth;
 
 class CourseController extends Controller
@@ -15,6 +17,10 @@ class CourseController extends Controller
      */
     public function index()
     {
+        // $courses = Course::select('finances.*', 'courses.*')
+        // ->join('finances', 'courses.id','=', 'finances.course_id')
+        // ->get();
+
         $courses = Course::all();
         return view('course.index', compact('courses'));
     }
@@ -38,14 +44,29 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+
+        $course = Course::where([
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'LevelOfStudy'=>$request->input('LevelOfStudy'),
+       ])->first();
+
+        if($course){
+            return redirect()->route('course.create')->with('error','Course unit already exists');
+               
+        }else{
         $course = Course::create([
             'name' => $request->input('name'),
             'code' => $request->input('code'),
             'Period' => $request->input('Period'),
             'LevelOfStudy' => $request->input('LevelOfStudy'),
             'duration' => $request->input('number'),
-            'fees' => $request->input('fees'),
+           
+            
+            
+
         ]);
+    }
 
          // Add activity logs
          $userlog = Auth::user();
@@ -55,7 +76,7 @@ class CourseController extends Controller
          //->withProperties(['customProperty' => 'customValue'])
          ->log('course saved by ' . $userlog->name);
 
-        return redirect()->route('course.create')->with('message','Course record has been saved');
+        return redirect()->route('finances.create')->with('message','Add course fees');
     }
 
     /**
@@ -95,7 +116,8 @@ class CourseController extends Controller
         $course->code = $request->input('code');
         $course->duration = $request->input('number');
         $course->Period= $request->input('Period');
-        $course->fees = $request->input('fees');
+        $course->LevelOfStudy= $request->input('LevelOfStudy');
+       
 
         $course->update();
 
@@ -108,7 +130,7 @@ class CourseController extends Controller
          //->withProperties(['customProperty' => 'customValue'])
          ->log('course updated by ' . $userlog->name);
 
-        return redirect()->back()->with('success', 'Course updated successfully');
+        return redirect()->route('course.index')->with('success', 'Course updated successfully');
     }
 
     /**
@@ -122,6 +144,8 @@ class CourseController extends Controller
         foreach ($course->student as $student) {
             (new StudentController)->destroy($student);
         }
+
+      
         $course->delete();
 
          // Add activity logs
@@ -134,4 +158,6 @@ class CourseController extends Controller
 
         return redirect()->route('course.index')->with('success','Course delted successfully.');
     }
+
+
 }

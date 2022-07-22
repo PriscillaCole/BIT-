@@ -17,6 +17,11 @@
         {{ session()->get('message') }}
     </div>
 @endif
+@if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+@endif
       <!-- SELECT2 EXAMPLE -->
       <div class="card card-default">
         <div class="card-header">
@@ -53,12 +58,11 @@
                 </div>
                 
                 <div class="form-group">
-                  <label style="margin-left:; font-size:18px;" for="duration">Duration</label>
                   <div class='row'>
 
                 <div class="col-md-6 form-group">
                   <label for="name">Period</label>
-                  <select required class="form-control select2" placeholder="Select a Semester" name="Period" style="width: 100%;" required>
+                  <select required class="form-control select2" placeholder="Select a Semster" name="Period" style="width: 100%;" required>
                       <option value=''> Select Period</option> 
                       <option>Years </option>
                       <option>Months</option>
@@ -69,7 +73,7 @@
 
                   <div class="col-md-6 form-group">
                   <label for="name">Number:</label>
-                  <select required class="form-control select2" placeholder="Select a Semester" name="number" style="width: 100%;" required>
+                  <select required class="form-control select2" placeholder="Select a Semster" name="number" style="width: 100%;" required>
                       <option value=''> Select Number</option> 
                       <option>1</option>
                       <option>2</option>
@@ -78,29 +82,33 @@
                       <option>5</option>
                   </select>
                 </div>
-                
+                 <div class="col-md-6 form-group">
+                 {{-- <label for="semster">Semester:</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="semster" id="" value="semester 1" required>
+                    <label style="margin-left: 20px;" class="form-check-label">Semester 1</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="semster" id="" value="semester 2" required>
+                    <label style="margin-left: 20px;" class="form-check-label">Semester 2</label>
+                  </div>
                 </div>
-                  <!-- <div class="form-check">
-                    <input class="form-check-input" type="radio" name="duration" id="duration" value="12">
-                    <label class="form-check-label">1 year</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="duration" id="duration" value="6">
-                    <label class="form-check-label">6 months</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="duration" id="duration" value="4">
-                    <label class="form-check-label">4 months</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="duration" id="duration" value="3">
-                    <label class="form-check-label">3 months</label>
-                  </div> -->
+              </div>
+              <div class='row'>
+              <div class=" col-md-6 form-group">
+                  <label for="functional_fees">Functional Fees:</label>
+                  <input type="number" class="form-control"step="1" min="5000" name="functional_fees" id="functional_fees" value="0" oninput="sum()" required>
                 </div>
+                <div class=" col-md-6 form-group">
+                  <label for="school_fees">School Fees:</label>
+                  <input type="number" class="form-control" name="school_fees" id="school_fees" value="0" oninput="sum()" on required>
+                </div>
+              </div>
+              </div>
                 <div style="margin-bottom:20px" class="from-group">
                   <label for="fees">Course fees:</label>
-                  <input type="number" class="form-control" name="fees" id="fees" required>
-                </div>
+                  <input type="number" class="form-control" name="fees" id="fees" readonly>
+                </div> --}}
             <button class="btn btn-primary" type="submit">Register</button>
             <button style="margin-left: 50px; margin-top:20px;margin-bottom:15px" class="btn btn-success" type="">
             <a style="color:white;" href="{{ route('course.index') }}"> <i class="fa fa-fw fa-lg fa-eye"></i>View Course</a> </button>
@@ -119,3 +127,11 @@
 </div>
 <!-- /.content-wrapper -->
 @endsection
+{{-- <script>
+function sum(){
+  var num1 = parseInt(document.getElementById("functional_fees").value);
+  var num2 = parseInt(document.getElementById("school_fees").value);
+  document.getElementById("fees").value = num1 + num2;
+  console.log(document.getElementById("fees").value);
+}
+</script> --}}

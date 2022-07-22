@@ -13,7 +13,7 @@
                         @endif
                     @else
                         @if(Session::has('error'))
-                        <div style="color: red" class="alert alert-danger">
+                        <div style="color: green" class="alert alert-danger">
                             {{Session::get('error')}}
                         </div>
                        @endif

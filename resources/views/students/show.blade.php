@@ -46,13 +46,13 @@
             <div class="card-body box-profile">
               <div class="text-center">
                 <img class="profile-user-img img-fluid img-circle"
-                     src="{{ asset('images')}}/{{$student->user->profileImage }}" style="max-width:100px;"
+                     src="{{ asset('images')}}/{{$student->profileImage }}" style="max-width:100px;"
                      alt="User profile picture">
               </div>
 
-              <h3 class="profile-username text-center">{{$student->user->name}}</h3>
+              <h3 class="profile-username text-center">{{$student->name}}</h3>
               <p class="text-center">{{ $student->studentID }}</p>
-              <p class="text-muted text-center">{{ $student->course->name }}</p>
+              <p class="text-muted text-center">{{ $student->name }}</p>
             </div>
             <!-- /.card-body -->
           </div>
@@ -103,7 +103,7 @@
                     <h5>Name:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->name }}</p>
+                    <p>{{ $student->name }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -111,7 +111,7 @@
                     <h5>Country:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->country}}</p>
+                    <p>{{ $student->country}}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -119,7 +119,7 @@
                     <h5>Nationality:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->nationality }}</p>
+                    <p>{{ $student->nationality }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -127,7 +127,7 @@
                     <h5>District:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->district }}</p>
+                    <p>{{ $student->district }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -135,7 +135,7 @@
                     <h5>Town:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->Town }}</p>
+                    <p>{{ $student->Town }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -143,7 +143,7 @@
                     <h5>Postal:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->postal }}</p>
+                    <p>{{ $student->postal }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -151,7 +151,7 @@
                     <h5>Email:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->email }}</p>
+                    <p>{{ $student->email }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -159,7 +159,7 @@
                     <h5>Phone Numbers:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->phone_1 }} <br> {{ $student->user->phone_2}} </p>
+                    <p>{{ $student->phone_1 }} <br> {{ $student->phone_2}} </p>
                   </div>
                 </div>  
                 <div class="row">
@@ -167,7 +167,7 @@
                     <h5>Gender:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->gender}}</p>
+                    <p>{{ $student->gender}}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -175,7 +175,7 @@
                     <h5>Date Of Birth:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->date_of_birth }}</p>
+                    <p>{{ $student->date_of_birth }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -183,7 +183,7 @@
                     <h5>Religion:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->religion }}</p>
+                    <p>{{ $student->religion }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -191,7 +191,7 @@
                     <h5>Marital Status:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->marital_status }}</p>
+                    <p>{{ $student->marital_status }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -199,7 +199,7 @@
                     <h5>Spouse Name:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->spouse_name }}</p>
+                    <p>{{ $student->spouse_name }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -207,7 +207,7 @@
                     <h5>Spouse Contact:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->spouse_contact }}</p>
+                    <p>{{ $student->spouse_contact }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -215,7 +215,7 @@
                     <h5>Disability:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->disability }}</p>
+                    <p>{{ $student->disability }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -223,7 +223,7 @@
                     <h5>Nature of Disability:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->nature_of_disability }}</p>
+                    <p>{{ $student->nature_of_disability }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -231,7 +231,7 @@
                     <h5>Father's (Guardian) Name:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->father_name }}</p>
+                    <p>{{ $student->father_name }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -239,7 +239,7 @@
                     <h5>Father's (Guardian) Contact:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->father_contact }}</p>
+                    <p>{{ $student->father_contact }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -247,7 +247,7 @@
                     <h5>Mother's (Guardian) Name:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->mother_name }}</p>
+                    <p>{{ $student->mother_name }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -255,7 +255,7 @@
                     <h5>Mother's (Guardian) Contact:</h5>
                   </div>
                   <div class="col-md-7">
-                    <p>{{ $student->user->mother_contact }}</p>
+                    <p>{{ $student->mother_contact }}</p>
                   </div>
                 </div>
               </div>

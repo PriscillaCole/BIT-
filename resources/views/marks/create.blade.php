@@ -35,32 +35,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-              <div class="form-group">
-                  <label for="course">student ID:</label>
-                  <select required class="form-control select2 studentID" placeholder="Select student ID" name="studentID" style="width: 100%;">
-                  
-                  <option value=''> Select student ID</option>  
-                  @foreach ($student as $course)                 
-                      <option>{{ $course->studentID }}</option>
-                     
-                      @endforeach
-                  <!-- @foreach($asign as $asig)  
-                      @foreach($courses as $course)
-                      @if($course->id==$asig->course_id)
-                      @foreach($students as $stud)
-                           @if($asig->course_id=$stud->course_id)                   
-                              <option>{{ $stud->studentID }}</option>
-                              @endif
-                      @endforeach
-                      @endif
-                      @endforeach
-                      @endforeach -->
-                     
-                  </select>
-                  <label  style="margin-bottom:10px;margin-top:20px" for="name">Name:</label>
-                <input type="text" class="form-control name" name="name" id="name"  disabled>
-                </div>
-                
+
 
                 @if(Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Lecturer')
                 <div class="form-group">
@@ -77,15 +52,30 @@
                 @elseif(Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Super User')
                 <div class="form-group">
                   <label for="CourseUnitCode">Course Unit Code:</label>
-                  <select required class="form-control select2" placeholder="Select Course Unit Code" name="CourseUnitCode" style="width: 100%;">
+                  <select required class="form-control select2" placeholder="Select Course Unit Code" name="CourseUnitCode" style="width: 100%;" id="courseUnitSelector">
                   
                   <option value=''> Select Course Unit Code</option>  
                   @foreach ($asign as $course)
+                      {{ explode(',', $course->course_unit_code) }}
                       <option>{{ $course->course_unit_code }}</option>
                     @endforeach
                   </select>
                 </div>
                 @endif
+              <div class="form-group">
+                  <label for="course">student ID:</label>
+                  <select required class="form-control select2 studentID" placeholder="Select student ID" name="studentID" style="width: 100%;" id="studentIDSelector">
+                  
+                      <option value=''> Select student ID</option>                  
+                      {{-- <option>{{ $stud->studentID }}</option> --}}
+                        
+                  </select>
+                  <label  style="margin-bottom:10px;margin-top:20px" for="name">Name:</label>
+                <input type="text" class="form-control name" name="name" id="name"  disabled>
+                </div>
+                
+
+               
 
                 <input type="hidden" name="exam" value="exam">
               <!-- <div class="row"> -->
@@ -160,6 +150,24 @@
 
 
 		});
+
+    $(document).on('change', '#courseUnitSelector', function (e){
+      $.ajax({
+				type:'get',
+				url:'{!!URL::to('getStudentsByCourse')!!}',
+				data:{'course_unit_code':e.target.value},
+				dataType:'json',//return data will be json
+				success:function(data){
+          let dropdown = $('#studentIDSelector');
+          $.each(data.data, function (key, entry) {
+            dropdown.append($('<option></option>').attr('value', entry.studentID).text(entry.studentID));
+          })
+				},
+				error: function(e){
+            console.log(e.responseText);
+          }
+			});
+    })
 
 	});
 </script>

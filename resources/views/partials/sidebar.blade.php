@@ -117,19 +117,30 @@
           <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
             <li class="nav-item "><a href="{{ route('payment.index') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">View Payments Records</a></li>
             <li class="nav-item " ><a  href="{{ route('payment.create') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Add Payment Record</a></li>
+            <li class="nav-item " ><a  href="{{ route('finances.index') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Financial Year</a></li>
           </ul>
         </li>
+
+        <li class="nav-item">
+          
+          <a  href="" class=" nav-link dropdown-toggle" data-toggle="dropdown">
+          Lecturers </a>
+          <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
+            <li class="nav-item "><a href="{{ route('lecturers.index') }}" class="nav-link {{ (request()->is('lecturers*')) ? 'active' : '' }}">View Lecturers</a></li>
+            <li class="nav-item " ><a  href="{{ route('lecturers.create') }}" class="nav-link {{ (request()->is('lecturers*')) ? 'active' : '' }}">Add Lecturer</a></li>
+            
+          </ul>
+        </li>
+
+
+
+
+
         @endif
    
-        <li class="nav-item ">
-                  <!-- <a  href="" class=" nav-link dropdown-toggle" data-toggle="dropdown">
-                    Course </a>
-                  <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
-                    <li class="nav-item "><a href="{{ route('course.index') }}" class="nav-link {{ (request()->is('course*')) ? 'active' : '' }}">Courses</a></li>
-                    <li class="nav-item " ><a  href="{{ route('course_unit.index') }}" class="nav-link {{ (request()->is('course-Unit*')) ? 'active' : '' }}">Course Unit</a></li>
-                  </ul> -->
-                </li>
        
+
+
         @if (Auth::user()->role == 'Accountant')
         <!-- <li class="nav-item">
           <a href="{{ route('payment.index') }}" class="nav-link {{ (request()->is('payment*')) ? 'active' : '' }}">
@@ -145,6 +156,7 @@
           <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
             <li class="nav-item "><a href="{{ route('payment.index') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">View Payments Records</a></li>
             <li class="nav-item " ><a  href="{{ route('payment.create') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Add Payment Record</a></li>
+            <li class="nav-item " ><a  href="{{ route('finances.index') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Financial Year</a></li>
           </ul>
         </li>
         @endif
@@ -221,12 +233,12 @@
         <a  href="" class=" nav-link dropdown-toggle" data-toggle="dropdown">
         Academics </a>
                   <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
-                    <li class="nav-item "><a href="{{ route('lecturers.index') }}" class="nav-link {{ (request()->is('Lecturer*')) ? 'active' : '' }}">Lecturers</a></li>
+                    
                     
                     <li class="nav-item "><a href="{{ route('course.create') }}" class="nav-link {{ (request()->is('course*')) ? 'active' : '' }}">Add Course</a></li>
                     <li class="nav-item "><a href="{{ route('course.index') }}" class="nav-link {{ (request()->is('course*')) ? 'active' : '' }}">View All Courses</a></li>
                     <li class="nav-item " ><a  href="{{ route('course_unit.create') }}" class="nav-link {{ (request()->is('course-Unit*')) ? 'active' : '' }}">Add Course Unit</a></li>
-                    <li class="nav-item " ><a  href="{{ route('course_unit.index') }}" class="nav-link {{ (request()->is('course-Unit*')) ? 'active' : '' }}">Course Unit</a></li>
+                    <li class="nav-item " ><a  href="{{ route('course_unit.index') }}" class="nav-link {{ (request()->is('course-Unit*')) ? 'active' : '' }}">View Course Units</a></li>
                     
                   </ul>
                 </li>
@@ -247,15 +259,18 @@
                 </li>
           
         </li> 
+       
         <li class="nav-item">
         <a  href="" class=" nav-link dropdown-toggle" data-toggle="dropdown">
         User Accounts  </a>
                   <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
                     <li class="nav-item "><a href="{{route('userss',['superUser' => session('user')])}}" class="nav-link {{ (request()->is('superUser*')) ? 'active' : '' }}">View All System Users List </a></li>
+                    @if (Auth::user()->role == 'Super User')
                     <li class="nav-item "><a href="{{route('userss-admins',['superUser' => session('user')])}}" class="nav-link {{ (request()->is('superUser*')) ? 'active' : '' }}">Add New User Account </a></li>
-                  
+                    @endif
                   </ul>
                 </li>
+                
           
         </li>  
         <li class="nav-item">
@@ -272,7 +287,7 @@
         <li>
         <a class="nav-item" href="{{ route('logout') }}"
                    onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;
+                             document.getElementById('logout-form').submit();" style="right:15px;"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;
                     {{ __('Logout') }}
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

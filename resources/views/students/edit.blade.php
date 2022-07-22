@@ -14,7 +14,7 @@
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h2 style="font-size:18px" class="card-title">Edit {{$student->studentID }}'s Information</h2 style="font-size:18px">
+            <h2 style="font-size:18px" class="card-title">Edit {{$student->user->name }}'s Information</h2 style="font-size:18px">
 
           </div>
           <!-- /.card-header -->
@@ -42,38 +42,8 @@
                   </div>
                 </div>
               </div>
-  
-              <h5>SECTION 1</h5>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label for="course">Programme being applied for:</label>
-                    <select class="form-control select2" name="course1" id="course1">
-                      @foreach(App\Models\Course::all() as $c)
-                      <option value="{{ $c->id }}" {{$student->course_id == $c->id ? "selected" : "" }}>{{ $c->name}}</option>
-                      
-                      @endforeach
-                  </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="optional_course">Optional Course:</label>
-                    
-                    <input type="text" class="form-control" name="optional_course" id="optional_course" value="{{$student->optional_course}}">
-                  </div>
-                  <label for="delivery">Mode of Delivery:</label>
-                  <div class="form-group">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="delivery" id="name" value="Weekend" {{ $student->delivery == 'Weekend' ? 'checked' : ''}}>
-                      <label style="margin-left: 20px;" class="form-check-label">Weekend</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="delivery" id="name" value="Distance Learning" {{ $student->delivery == 'Distance Learning' ? 'checked' : ''}}>
-                      <label style="margin-left: 20px;" class="form-check-label">Distance Learning</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
+
+                
               <h5>1.1: APPLICANT’S PERSONAL INFORMATION</h5>
               <div class="row">
                 <div class="col-md-12">
@@ -88,7 +58,7 @@
                   <option>{{ $student->user->country }}</option>
                   @else
                     <option value="">select Country</option>
-                    <option>Uganda<n/option>
+                    <option>Uganda</option>
                     <option>Kenya</option>
                     <option>S.Sudan</option>
                     <option>Rwanda</option>
@@ -107,7 +77,7 @@
                   <option>{{ $student->user->nationality }}</option>
                   @else
                     <option value="">select Nationality</option>
-                    <option>Ugandan<n/option>
+                    <option>Ugandan</option>
                     <option>Kenyan</option>
                     <option>S.Sudanise</option>
                     <option>Rwandan</option>
@@ -128,7 +98,7 @@
                   <input type="text" class="form-control" value="{{$student->user->Town}}" name="Town" id="Town" required>
                 </div>
                 <div class="form-group">
-                  <label for="postal">P.O BOX:</label>
+                  <label for="postal">P.O Box:</label>
                   <input type="text" class="form-control" value="{{$student->user->postal}}" name="postal" id="postal" required>
                 </div>
                   
@@ -187,6 +157,48 @@
                   </div>
                 </div>
               </div>
+              
+  
+              <h5>SECTION 1</h5>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="course">Programme Being Applied For:</label>
+                    <select class="form-control select2" name="course1" id="course1">
+                      @foreach(App\Models\Course::all() as $c)
+                      <option value="{{ $c->id }}" {{$student->course_id == $c->id ? "selected" : "" }}>{{ $c->name}}</option>
+                      @endforeach
+                  </select>
+                  </div>
+
+                  <label for="optional-course">Option:</label>
+                  <div class="form-group @error('delivery') is-invalid @enderror">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="optional_course" id="optional_course" value="Day" {{ $student->optional_course == 'Day' ? 'checked' : ''}} required>
+                      <label style="margin-left: 20px;" class="form-check-label">Day</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="optional_course" id="optional_course" value="Evening" {{ $student->optional_course == 'Evening' ? 'checked' : ''}} required>
+                      <label  style="margin-left: 20px;"class="form-check-label">Evening</label>
+                    </div>
+                    @error('intake') {{ $message }} @enderror
+                  </div>
+
+                  <label for="delivery">Mode of Delivery:</label>
+                <div class="form-group @error('delivery') is-invalid @enderror">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Physical" {{ $student->delivery == 'Physical' ? 'checked' : ''}} required>
+                    <label style="margin-left: 20px;" class="form-check-label">Physical</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="delivery" id="name" value="Online/Distance Learning"  {{ $student->delivery == 'Online/Distance Learning' ? 'checked' : ''}} required>
+                    <label  style="margin-left: 20px;"class="form-check-label">Online/Distance Learning</label>
+                  </div>
+                  @error('intake') {{ $message }} @enderror
+                </div>
+                </div>
+              </div>
+  
   
               <h5>1.3: APPLICANT’S CONTACT</h5>
               <div class="row">
@@ -200,7 +212,7 @@
                     <input type="text" class="form-control" name="phone_1" id="phone_1" value="{{$student->user->phone_1}}">                
                   </div>
                   <div class="form-group">
-                    <label for="phone_2">Alt Phone Number:</label>
+                    <label for="phone_2">Alternative Phone Number:</label>
                     <input type="text" class="form-control" name="phone_2" id="phone_2" value="{{$student->user->phone_2}}">                 
                   </div>
                 </div>
@@ -238,8 +250,8 @@
                   <div class="form-group">
                     <label for="sponsorship">Please indicate details of any scholarships, or Grant relating to the course for which you are applying.</label>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sponsorship" id="sponsorship" value="Government" {{ $student->sponsorship == 'Government' ? 'checked' : ''}}>
-                      <label style="margin-left: 20px;" class="form-check-label">Government/Ministry</label>
+                      <input class="form-check-input" type="radio" name="sponsorship" id="sponsorship" value="Scholarship/funded" {{ $student->sponsorship == 'Scholarship/funded' ? 'checked' : ''}}>
+                      <label style="margin-left: 20px;" class="form-check-label">Scholarship/Funded</label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="sponsorship" id="sponsorship" value="Private" {{ $student->sponsorship == 'Private' ? 'checked' : ''}}>

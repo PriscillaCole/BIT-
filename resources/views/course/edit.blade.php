@@ -28,6 +28,17 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
+
+                <div class="form-group">
+                  <label for="name">Level Of Study:</label>
+                  <select required class="form-control select2" placeholder="Select a Level" name="LevelOfStudy" style="width: 100%;" required>
+                      <option value="{{ $course->LevelOfStudy }}"> {{ $course->LevelOfStudy }}</option> 
+                      <option>Bachelor</option>
+                      <option>Diploma</option>
+                      <option>Certificate</option>
+                      <option>Short course</option>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label for="name">Course Name:</label>
                   <input type="text" class="form-control" name="name" id="name" value="{{ $course->name }}">
@@ -38,13 +49,13 @@
                   <input type="hidden" value="{{$course->id}}" name="id">
                 </div>
                 <div class="form-group">
-                  <label style="margin-left:; font-size:18px;" for="duration">Duration</label>
+              
                   <div class='row'>
 
                 <div class="col-md-6 form-group">
                   <label for="name">Period</label>
-                  <select required class="form-control select2" {{ ($course->Period =='Years') ||($course->Period =='Months') || ($course->Period =='Weeks')|| ($course->Period =='Days')? 'selected' : '' }} placeholder="Select a Semester" name="Period" style="width: 100%;" required>
-                      <option value=''> Select Period</option> 
+                  <select required class="form-control select2" placeholder="Select a Semester" name="Period" style="width: 100%;" required>
+                      <option value="{{ $course->Period}}">{{ $course->Period}}</option> 
                       <option>Years </option>
                       <option>Months</option>
                       <option>Weeks</option>
@@ -56,7 +67,7 @@
                   <div class="col-md-6 form-group">
                   <label for="name">Number:</label>
                   <select required class="form-control select2" placeholder="Select a Semester" name="number" style="width: 100%;" required>
-                      <option value=''> Select Number</option> 
+                      <option value="{{ $course->duration }}">{{ $course->duration }}</option> 
                       <option>1</option>
                       <option>2</option>
                       <option>3</option>
@@ -68,31 +79,18 @@
                       <option>9</option>
                   </select>
                 </div>
-                
-                </div>
-                <!-- <div class="form-group">
-                  <label for="duration">Duration:</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="duration" id="duration" value="24" {{ $course->duration == 24 ? 'checked' : ''}}>
-                    <label class="form-check-label">2 years</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="duration" id="duration" value="12" {{ $course->duration == 12 ? 'checked' : ''}}>
-                    <label class="form-check-label">1 year</label>
-                  </div> -->
-                </div>
-                <div class="from-group">
-                  <label for="fees">Course fees:</label>
-                  <input type="number" class="form-control" name="fees" id="fees" value="{{ $course->fees}}">
-                </div>
-              </div>
+               
+            
               <!--col-->
             </div>
             <!--row-->
+            <div class="form-group">
             <button class="btn btn-primary" type="submit">Update</button>
             <a style="margin-left:30px;" href="{{url('/course')}}">
+            
             <!-- <button class="btn btn-primary"><i class="fa fa-home mr-1"></i> -->
             Course List
+          </div>
           <!-- </button> -->
         </a>
           </div>
@@ -109,3 +107,11 @@
 </div>
 <!-- /.content-wrapper -->
 @endsection
+<script>
+function sum(){
+  var num1 = parseInt(document.getElementById("functional_fees").value);
+  var num2 = parseInt(document.getElementById("school_fees").value);
+  document.getElementById("fees").value = num1 + num2;
+  console.log(document.getElementById("fees").value);
+}
+</script>

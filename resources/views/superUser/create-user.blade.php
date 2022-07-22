@@ -79,7 +79,7 @@
                   <select class="form-control select2" placeholder="Select a Country" name="country" style="width: 100%;" required>
                    
                     <option value="">select Country</option>
-                    <option>Uganda<n/option>
+                    <option>Uganda</option>
                     <option>Kenya</option>
                     <option>S.Sudan</option>
                     <option>Rwanda</option>
@@ -94,7 +94,7 @@
                   <select class="form-control select2" placeholder="Select a Nationality" name="nationality" style="width: 100%;" required>
                    
                     <option value="">select Nationality</option>
-                    <option>Ugandan<n/option>
+                    <option>Ugandan</option>
                     <option>Kenyan</option>
                     <option>S.Sudanise</option>
                     <option>Rwandan</option>

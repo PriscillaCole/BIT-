@@ -46,12 +46,13 @@ class MarksController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        $course_unit_id = Course_unit::where('course_unit_code', $request->input('CourseUnitCode'))->first()->id;
+
         if($request->test=='test'){
             $course = Marks::create([
                 'studentID' => $request->input('studentID'),
                 'test' => $request->input('score'),
-                'course_unit_code'=>$request->input('CourseUnitCode'),
+                'course_unit_id'=>$course_unit_id,
             ]);
              $userlog = Auth::user();
              activity('test marks')
@@ -62,8 +63,8 @@ class MarksController extends Controller
         }else
 
         {
-           $final=Marks::where(['studentID'=>$request->input('studentID'),'course_unit_code'=>$request->input('CourseUnitCode')])->first();
-           $categories =DB::table('marks')->where(['studentID'=>$request->input('studentID'),'course_unit_code'=>$request->input('CourseUnitCode')])->latest()->first();
+           $final=Marks::where(['studentID'=>$request->input('studentID'),'course_unit_id'=>$course_unit_id])->first();
+           $categories =DB::table('marks')->where(['studentID'=>$request->input('studentID'),'course_unit_id'=>$course_unit_id])->latest()->first();
         //    dd($categories);
            if ($categories) {
                # code...
@@ -73,14 +74,14 @@ class MarksController extends Controller
                $toal=$Exa+$Tes;
 
                // dd($Tes,$Exa,(Integer)$toal);
-               $courseh = Marks::where([ 'studentID'=>$request->input('studentID'),'course_unit_code'=>$request->input('CourseUnitCode')])->update(['exam'=>$request->input('score'),'total_score'=>(Integer)$toal]);
+               $courseh = Marks::where([ 'studentID'=>$request->input('studentID'),'course_unit_id'=>$course_unit_id])->update(['exam'=>$request->input('score'),'total_score'=>(Integer)$toal]);
 
            }else{
             // dd($categories);
             $course = Marks::create([
                 'studentID' => $request->input('studentID'),
                 'exam' => $request->input('score'),
-                'course_unit_code'=>$request->input('CourseUnitCode'),
+                'course_unit_id'=>$course_unit_id,
             ]);
              // Add activity logs
          $userlog = Auth::user();
@@ -212,4 +213,22 @@ class MarksController extends Controller
 
         return redirect()->route('marks.index')->with('success', 'Student mark deleted successfully');
     }
+
+    public function findStudentsByCourseUnit(Request $request){
+        // $course_id = Course::where('name', $request->course)->id;
+        
+        $query=Course_unit::where('course_unit_code', $request->course_unit_code)->first();
+
+        $course= Course::where('code', $query->course_code)->first()->id;
+
+        $students=Student::where('course_id', $course)->get();
+    
+        $data = array(
+            'data'  => $students,
+           );
+		// $p=Course_unit::where('course_code',$request->id)->first();
+
+        
+    	return response()->json($data);
+	}
 }

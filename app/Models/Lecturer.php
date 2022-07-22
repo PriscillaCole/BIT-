@@ -19,7 +19,20 @@ class Lecturer extends Model
         'country',
         'Town',
         'postal',
+        'nextOfKin1Name',
+       'nextOfKin1Contact',
+        'nextOfKin1Email',
+        'nextOfKin1Address',
+        'nextOfKin2Name',
+        'nextOfKin2Contact',
+        'nextOfKin2Email',
+        'nextOfKin2Address',
+        'qualification',
+        'yearOfStudy',
+        'institution',
+        'specialzation'
     ];
+    public $primaryKey = 'user_id';
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -35,5 +48,10 @@ class Lecturer extends Model
     public function getActivitylogOptions():LogOptions{
         return LogOptions::defaults();
     }
+    
+    public function lecture_course_units(){
+        return $this->hasMany(Lecture_Course_units::class);
+    }
+    
 
 }

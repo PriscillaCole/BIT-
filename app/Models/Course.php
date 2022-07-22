@@ -16,9 +16,9 @@ class Course extends Model
         'name',
         'code',
         'duration',
-        'fees',
         'Period',
         'LevelOfStudy',
+        
     ];
 
     public function student(){

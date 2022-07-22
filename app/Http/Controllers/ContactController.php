@@ -22,7 +22,7 @@ class ContactController extends Controller
             'msg'=> $request->msg
         ];
 
-        Mail::to('userb3681@gmail.com')->send(new ContactMail($details));
+        Mail::to('amokolpriscilla@gmail.com')->send(new ContactMail($details));
         return back()->with('message_sent','Your message has been sent successfully!');
 
 

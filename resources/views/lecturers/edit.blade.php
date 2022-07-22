@@ -2,6 +2,10 @@
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
+<?php
+        
+        $course_code=App\Models\Course_unit::all();
+        ?>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -41,11 +45,11 @@
                 <div class="col-md-6  form-group">
                   <label for="country">Country of residence:</label>
                   <select class="form-control select2" placeholder="Select a Country" name="country" style="width: 100%;">
-                  @if($admin->country)  
+                    
                   <option>{{ $admin->country }}</option>
-                  @else
-                    <option value="">select Country</option>
-                    <option>Uganda<n/option>
+                  
+                    
+                    <option>Uganda</option>
                     <option>Kenya</option>
                     <option>S.Sudan</option>
                     <option>Rwanda</option>
@@ -53,18 +57,18 @@
                     <option>Burundian/option>
                     <option>Eritrea</option>
                     <option>DRC</option>
-                    @endif
+                    
                   </select>
                 </div>
                 <input type="hidden" name="id" value="{{$admin->id}}">
                 <div class=" col-md-6 form-group">
                   <label for="nationality">Nationality:</label>
                   <select class="form-control select2" placeholder="Select a Nationality" name="nationality" style="width: 100%;">
-                  @if($admin->nationality)  
+                    
                   <option>{{ $admin->nationality }}</option>
-                  @else
-                    <option value="">select Nationality</option>
-                    <option>Ugandan<n/option>
+                  
+                    
+                    <option>Ugandan</option>
                     <option>Kenyan</option>
                     <option>S.Sudanise</option>
                     <option>Rwandan</option>
@@ -72,7 +76,7 @@
                     <option>Burundian</option>
                     <option>Eritrean</option>
                     <option>DRC</option>
-                    @endif
+                    
                   </select>
                 </div>
                 
@@ -139,6 +143,20 @@
               </div>
             </div>
 
+            <div class=" form-group col-md-6 ">
+                  <label for="CourseUnitCode">Course Unit Code:</label>
+                  <select multiple class="form-control select2" placeholder="Select Course Unit Code" name="CourseUnitCode[]" style="width: 100%;" id="category">
+      
+                    <option selected>{{$courses->course_unit_code}}</option>
+                    
+                      @foreach ($course_code as $course)
+                      <option>{{ $course->course_unit_code }}</option>
+                    @endforeach
+                  
+                  </select>
+                </div> 
+
+
             <h5>1.2: DISABILITY</h5>
             <div class="row">
               <div class="col-md-12">
@@ -187,30 +205,102 @@
               </div>
             </div>
 
-            <h5>1.4 PARENTS/GUARDIAN’S (next of kin) CONTACT</h5>
+
+
+            <h5>1.4 NEXT OF KIN CONTACT</h5>
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="father_name">Father's (Guardian) Name:</label>
-                  <input type="text" class="form-control" name="father_name" id="father_name" value="{{$admin->father_name}}">
+                  <label for="father_name">Next of kin (1) Name:</label>
+                  <input type="father_name" class="form-control" name="nextOfKin1Name" id="nextOfKin1Name"  value="{{$lect->nextOfKin1Name}}">
                 </div>
         
                 <div class="form-group">
-                  <label for="father_contact">Father's (Guardian) Contact:</label>
-                  <input type="tel" class="form-control" name="father_contact" id="father_contact" value="{{$admin->father_contact}}">
+                  <label for="father_contact">Next of kin (1) Contact:</label>
+                  <input type="tel" class="form-control" name="nextOfKin1Contact" id="nextOfKin1Contact" value="{{$lect->nextOfKin1Contact}}">
                 </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (1) e-mail:</label>
+                  <input type="email" class="form-control" name="nextOfKin1Email" id="nextOfKin1Email" value="{{$lect->nextOfKin1Email}}">
+                </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (1) Address:</label>
+                  <input type="address" class="form-control" name="nextOfKin1Address" id="nextOfKin1Address" value="{{$lect->nextOfKin1Address}}">
+                </div>
+
               </div>
+
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="mother_name">Mother's (Guardian) Name:</label>
-                  <input type="text" class="form-control" name="mother_name" id="mother_name" value="{{$admin->mother_name}}">
+                  <label for="mother_name">Next of kin (2) Name:</label>
+                  <input type="text" class="form-control" name="nextOfKin2Name" id="nextOfKin2Name" value="{{$lect->nextOfKin2Name}}" >
                 </div>
         
                 <div class="form-group">
-                  <label for="mother_contact">Mother (Guardian) Contact:</label>
-                  <input type="tel" class="form-control" name="mother_contact" id="mother_contact" value="{{$admin->mother_contact}}">
+                  <label for="mother_contact">Next of kin (2) Contact:</label>
+                  <input type="tel" class="form-control" name="nextOfKin2Contact" id="nextOfKin2Contact" value="{{$lect->nextOfKin2Contact}}">
+                </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (2) e-mail:</label>
+                  <input type="email" class="form-control" name="nextOfKin2Email" id="nextOfKin2Email" value="{{$lect->nextOfKin2Email}}">
+                </div>
+
+                <div class="form-group">
+                  <label for="father_contact">Next of kin (2) Address:</label>
+                  <input type="address" class="form-control" name="nextOfKin2Address" id="nextOfKin2Address" value="{{$lect->nextOfKin2Address}}">
                 </div>
               </div>
+            </div>
+
+            <h5>1.3: ACADEMIC BACKGROUND</h5>
+            <div class="row">
+              <div class="col-md-12">
+              <div class="form-group">
+                  <label for="nationality">Qualification:</label>
+                  <select class="form-control select2" placeholder=" Select a qualification " name="qualification" style="width: 100%;">
+        
+                    <option>{{ $lect->qualification }}</option>
+                    <option>Primary</option>
+                    <option>Lower Secondary - Ordinary Level</option>
+                    <option>Upper Secondary - Advanced Level</option>
+                    <option>Vocational/Technical</option>
+                    <option>Bachelor</option>
+                    <option>Master</option>
+                    <option>Doctorate</option>
+                  
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="phone_1">Year of Study:</label>
+                  <select  class="form-control select2"  placeholder= "year" name="yearOfStudy" id="yearOfStudy" style="width: 100%;" >  
+                  <option>{{ $lect->yearOfStudy }}</option>
+                   <option value="">Select Year Of Study</option>
+                    <option value="{!! Form::selectYear('year', 1900, 2022) !!}</option>
+                  
+                  </select>               
+                </div>
+
+                <div class="form-group">
+                  <label for="phone_2">Institution:</label>
+                  <input type="text" class="form-control" name="institution" id="institution" value="{{$lect->institution}}">                 
+                </div>
+
+                <div class="form-group">
+                  <label for="phone_2">Specialization:</label>
+                  <input type="text" class="form-control" name="specialzation" id="specialzation" value="{{$lect->specialzation}}">                 
+                </div>
+
+               
+              </div>
+            </div>
+
+
+
+
+
               <div class="">
                 <div class="col-md-12">
                   <div class="form-group">
@@ -246,9 +336,43 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" 
-        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" 
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script> --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+
+
+<script>
+$(document).ready(function(){
+$('#category').multiselect({
+nonSelectedText: 'Select course_unit code',
+enableFiltering: true,
+enableCaseInsensitiveFiltering: true,
+buttonWidth:'400px'
+});
+$('#category_form').on('submit', function(event){
+event.preventDefault();
+var form_data = $(this).serialize();
+$.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+});
+$.ajax({
+url:"{{ url('storelecturer_cu') }}",
+method:"POST",
+data:form_data,
+success:function(data)
+{
+$('#category option:selected').each(function(){
+$(this).prop('selected', false);
+});
+$('#category').multiselect('refresh');
+alert(data['success']);
+}
+});
+});
+});
 </script>
 <script>
   function previewFile(input){

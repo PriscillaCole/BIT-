@@ -66,8 +66,8 @@
                     @if (auth()->user()->role !=='Lecturer')
                     <th>Delivery</th>
                     <th>Intake</th>
-                    <th>View</th>
-                    <th>Delete</th>
+                    <th>Update</th>
+                    {{-- <th>Delete</th> --}}
                     @endif
                   </tr>
                   </thead>
@@ -76,18 +76,19 @@
                     @foreach ($students as $student)
                         <tr>
                             <td>{{ $student->studentID }}</td>
-                            <td><a href="{{ route('student.show' ,['student'=>$student]) }}">{{ $student->user->name }}</a></td>
-                            <td>{{ $student->course->name }}</td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="detailsButton" value="{{ $student->id }}">
+                              {{ $student->user->name }}</button></td>
+                            <td>{{ $student->course }}</td>
                             <td>{{ $student->delivery }}</td>
                             <td>{{ $student->intake }}</td>
-                            <td><a href="{{ route('student.edit',['student'=>$student]) }}">View</a></td>
-                            <td>
+                            <td><a href="{{ route('student.edit',['student'=>$student]) }}">Update</a></td>
+                            {{-- <td>
                                 <form action="{{ route('student.destroy',['student'=>$student]) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button  class="btn btn-xs btn-danger show_confirm" type="submit" data-toggle="tooltip" title='Delete'>Delete</button>
                                 </form>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                   @else
@@ -100,8 +101,10 @@
                       @if($units->course_unit_code==$lec->course_unit_code)
                             <tr>
                                 <td>{{ $student->studentID }}</td>
-                                <td><a href="{{ route('student.show' ,['student'=>$student]) }}">{{ $student->user->name }}</a></td>
-                                <td>{{ $student->course->name }}</td>
+                                {{-- <td><a href="{{ route('student.show' ,['student'=>$student]) }}">{{ $student->user->name }}</a></td> --}}
+                                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="detailsButton" value="{{ $student->id }}">
+                                  {{ $student->user->name }}</button></td>
+                                <td>{{ $student->course }}</td>
 
                                 <td>{{ $units->course_code }}</td>
                                 <td>{{ $units->course_unit_code }}</td>
@@ -142,8 +145,8 @@
                     @if (auth()->user()->role !=='Lecturer')
                     <th>Delivery</th>
                     <th>Intake</th>
-                    <th>View</th>
-                    <th>Delete</th>
+                    <th>Update</th>
+                    {{-- <th>Delete</th> --}}
                     @endif
                   </tr>
                   </tfoot>
@@ -158,12 +161,314 @@
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Student Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4">
+        
+                  <!-- Profile Image -->
+                  <div class="card card-primary card-outline" style="border-top-color: #f4a02e; width:460px;">
+                    <div class="card-body box-profile">
+                      {{-- <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle"
+                             src="{{ asset('images')}}/{{$student->user->profileImage }}" style="max-width:100px;"
+                             alt="User profile picture">
+                      </div> --}}
+                      <div class="text-center">
+                       <img class="profile-user-img img-fluid img-circle"   style="max-width:100px;" id="studentDetailsImage">
+                      </div>
+                      <h3 class="profile-username text-center" id="studentDetailsName"></h3>
+                      <p class="text-center"  id="studentDetailsStudentId"></p>
+                      <p class="text-muted text-center" id="studentDetailsCourse"></p>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                  <!-- About Me Box -->
+                  <div class="card card-primary" style="width:460px;" >
+                    <div class="card-body" >
+                      <strong>Intake</strong>
+        
+                      <p class="text-muted" id="studentDetailsIntake"></p>
+        
+                      <hr>
+        
+                      <strong></i>Academic Year</strong>
+        
+                      <p class="text-muted" id="studentDetailsYear"></p>
+        
+                      <hr>
+        
+                      <strong>Mode of Delivery</strong>
+        
+                      <p class="text-muted" id="studentDetailsDelivery"></p>
+        
+                      <hr>
+        
+                      <strong>Sponsorship</strong>
+        
+                      <p class="text-muted" id="studentDetailsSponsorship"></p>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <div style="width:463px;">
+                  <div class="card card-default">
+                    <div class="card-header">
+                      <h3 class="card-title">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                      </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body"  style="width:460px;">
+                      <div class="callout">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Name:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsNames"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Country:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsCountry"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Nationality:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsNationality"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>District:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsDistrict"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Town:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsTown"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Postal:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsPostal"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Email:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsEmail"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Phone Numbers:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsPhone_1"></p>
+                            <p id="studentDetailsPhone_2"></p>
+                          </div>
+                        </div>  
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Gender:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsGender"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Date Of Birth:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsDate_of_birth"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Religion:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsReligion"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Marital Status:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsMarital_status"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Spouse Name:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsSpouse_name"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Spouse Contact:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsSpouse_contact"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Disability:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsDisability"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Nature of Disability:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsNature_of_disability"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Father's (Guardian) Name:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsFather_name"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Father's (Guardian) Contact:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsFather_contact"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Mother's (Guardian) Name:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsMother_name"></p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h5>Mother's (Guardian) Contact:</h5>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="studentDetailsMother_contact"></p>
+                          </div>
+                        </div>
+                      </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </section>
+
+    
     <!-- /.content -->
   </div>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
   <script type="text/javascript">
+  	$(document).ready(function(){
+
+    $(document).on('click', "#detailsButton", function(e) {
+      console.log(e.target.value)
+      $.ajax({
+				type:'get',
+				url:'{!!URL::to('student_details')!!}',
+				data:{'id':e.target.value},
+				dataType:'json',//return data will be json
+				success:function(data){
+         
+            document.getElementById("studentDetailsName").innerHTML=data.data.name
+            document.getElementById("studentDetailsNames").innerHTML=data.data.name
+            document.getElementById("studentDetailsStudentId").innerHTML=data.data.studentID
+            document.getElementById("studentDetailsIntake").innerHTML=data.data.intake
+            document.getElementById("studentDetailsYear").innerHTML=data.data.academic_year
+            document.getElementById("studentDetailsDelivery").innerHTML=data.data.delivery
+            document.getElementById("studentDetailsSponsorship").innerHTML=data.data.sponsorship
+            document.getElementById("studentDetailsCountry").innerHTML=data.data.studentID
+            document.getElementById("studentDetailsNationality").innerHTML=data.data.nationality
+            document.getElementById("studentDetailsDistrict").innerHTML=data.data.district
+            document.getElementById("studentDetailsPostal").innerHTML=data.data.postal
+            document.getElementById("studentDetailsTown").innerHTML=data.data.Town
+            document.getElementById("studentDetailsEmail").innerHTML=data.data.email
+            document.getElementById("studentDetailsPhone_1").innerHTML=data.data.phone_1
+            document.getElementById("studentDetailsPhone_2").innerHTML=data.data.phone_2
+            document.getElementById("studentDetailsGender").innerHTML=data.data.gender
+            document.getElementById("studentDetailsDate_of_birth").innerHTML=data.data.date_of_birth
+            document.getElementById("studentDetailsReligion").innerHTML=data.data.religion
+            document.getElementById("studentDetailsMarital_status").innerHTML=data.data.marital_status
+            document.getElementById("studentDetailsSpouse_name").innerHTML=data.data.spouse_name
+            document.getElementById("studentDetailsSpouse_contact").innerHTML=data.data.spouse_contact
+            document.getElementById("studentDetailsDisability").innerHTML=data.data.disability
+            document.getElementById("studentDetailsNature_of_disability").innerHTML=data.data.nature_of_disability
+            document.getElementById("studentDetailsFather_name").innerHTML=data.data.father_name
+            document.getElementById("studentDetailsFather_contact").innerHTML=data.data.father_contact
+            document.getElementById("studentDetailsMother_name").innerHTML=data.data.mother_name
+            document.getElementById("studentDetailsMother_contact").innerHTML=data.data.mother_contact
+            document.getElementById("studentDetailsMother_contact").innerHTML=data.data.profileImage
+            
+
+
+        },
+				error: function(e){
+            console.log(e.responseText);
+          }
+			});
+    })
  
      $('.show_confirm').click(function(event) {
           var form =  $(this).closest("form");
@@ -182,6 +487,7 @@
             }
           });
       });
+    });
   
   </script>
   <!-- /.content-wrapper -->

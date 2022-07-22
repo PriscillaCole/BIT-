@@ -13,11 +13,10 @@ class Marks extends Model
     use LogsActivity;
     protected $fillable = [
         'studentID',
-        'course_code',
         'test',
         'exam',
         'score',
-        'course_unit_code',
+        'course_unit_id',
     ];
 
     public function student(){

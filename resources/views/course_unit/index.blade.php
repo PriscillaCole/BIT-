@@ -8,7 +8,7 @@
     <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">
-        <a href="{{ route('course_unit.create') }}"><button class="btn btn-primary">Register course Unit</button></a>
+        <a href="{{ route('course_unit.create') }}"><button class="btn btn-primary">Register Course Unit</button></a>
         @if(session()->has('success'))
               <div class="alert alert-success">
                   {{ session()->get('success') }}
@@ -113,7 +113,8 @@
 <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 <script type="text/javascript">
  

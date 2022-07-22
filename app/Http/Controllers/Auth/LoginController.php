@@ -67,10 +67,10 @@ class LoginController extends Controller
             if (auth()->user()->role == 'Student') {
                 $user_id = auth()->user()->id;
                 //Retrieve student from array
-                $student = Student::where('user_id', $user_id)->get()[0];
+                $student = Student::where('user_id', $user_id)->get();
                 //Store session of Student
                 session(['user'=>$student]);
-                return redirect()->route('student.show' ,['student'=>$student]);
+                return redirect()->route('students.show' ,['student'=>$student]);
             } elseif (auth()->user()->role == 'Admin'){
                 $user_id = Auth::user()->id;
                 $admin = Admin::where('user_id', $user_id)->get()[0];

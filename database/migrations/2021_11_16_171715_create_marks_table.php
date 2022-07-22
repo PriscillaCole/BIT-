@@ -16,11 +16,12 @@ class CreateMarksTable extends Migration
     {
         Schema::create('marks', function (Blueprint $table) {
             $table->id();
-            $table->string('course_code');
-            $table->string('course_unit_code');
-            $table->integer('score');
-            $table->integer('test');
-            $table->integer('exam');
+            $table->string('studentID');
+            $table->foreignId('course_unit_id');
+            $table->integer('score')->nullable();
+            $table->integer('total_score')->nullable();
+            $table->integer('test')->nullable();
+            $table->integer('exam')->nullable();
             $table->timestamps();
         });
     }
