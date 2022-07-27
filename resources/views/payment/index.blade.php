@@ -58,7 +58,7 @@
                     <th>Registration Number</th>
                     <th>Student Name</th>
                     <th>Course</th>
-                    <th>Current Year</th>
+                    <th>Academic Year</th>
                     <th>Semester</th>
                     <th>Total Fees</th>
                     <th>Fees Paid</th>
@@ -113,7 +113,7 @@
                     <th>Registration Number</th>
                     <th>Student Name</th>
                     <th>Course</th>
-                    <th>Current Year</th>
+                    <th>Academic Year</th>
                     <th>Semester</th>
                     <th>Total Fees</th>
                     <th>Fees Paid</th>

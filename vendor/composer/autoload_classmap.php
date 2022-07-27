@@ -49,6 +49,7 @@ return array(
     'App\\Models\\Announcement' => $baseDir . '/app/Models/Announcement.php',
     'App\\Models\\Course' => $baseDir . '/app/Models/Course.php',
     'App\\Models\\Course_unit' => $baseDir . '/app/Models/Course_unit.php',
+    'App\\Models\\Enrollment' => $baseDir . '/app/Models/Enrollment.php',
     'App\\Models\\Finances' => $baseDir . '/app/Models/Finances.php',
     'App\\Models\\Lecture_Course_units' => $baseDir . '/app/Models/Lecture_Course_units.php',
     'App\\Models\\Lecturer' => $baseDir . '/app/Models/Lecturer.php',

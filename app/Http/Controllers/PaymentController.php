@@ -24,14 +24,14 @@ class PaymentController extends Controller
     public function index()
     {
         $payments = DB::table('payment_summaries')
-        ->select(DB::raw("SUM(`payments`.`amount`) as amount"), 'users.name', 'students.studentID','students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status')
+        ->select(DB::raw("SUM(`payments`.`amount`) as amount"), 'users.name', 'students.studentID','students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id')
         ->join('registrations','payment_summaries.registration_id','=','registrations.id')
-        ->join('finances','finances.id','=','payment_summaries.finance_id')
-        ->join('academic_years', 'finances.academic_year_id', '=', 'academic_years.id')
         ->join('students', 'registrations.student_id', '=', 'students.id')
+        ->join('finances','finances.course_id','=','students.course_id')
+        ->join('academic_years', 'finances.academic_year_id', '=', 'academic_years.id')
         ->join('users', 'students.user_id', '=', 'users.id')
         ->join('payments', 'payment_summaries.id', '=', 'payments.payment_summaries_id')
-        ->groupBy('users.name', 'students.studentID', 'students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status')
+        ->groupBy('users.name', 'students.studentID', 'students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id')
         ->get();
 
         // $payments = PaymentSummary::select('registrations.*', 'finances.*', 'payment_summaries.*', 'academic_years.academic_years', 'students.studentID', 'users.name' )
@@ -241,7 +241,17 @@ class PaymentController extends Controller
 
         $registration =  Registration::where('student_id', $student->id)->first();
 
-        $payments = PaymentSummary::select('payment_summaries.*', 'payments.*')->where('registration_id', $registration->id)->join('payments', 'payment_summaries.id','=', 'payments.payment_summaries_id')->get();
+        $payments = DB::table('payment_summaries')
+        ->select(DB::raw("SUM(`payments`.`amount`) as amount"), 'users.name', 'students.studentID','students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id')
+        ->where('registration_id', $registration->id)
+        ->join('registrations','payment_summaries.registration_id','=','registrations.id')
+        ->join('students', 'registrations.student_id', '=', 'students.id')
+        ->join('finances','finances.course_id','=','students.course_id')
+        ->join('academic_years', 'finances.academic_year_id', '=', 'academic_years.id')
+        ->join('users', 'students.user_id', '=', 'users.id')
+        ->join('payments', 'payment_summaries.id', '=', 'payments.payment_summaries_id')
+        ->groupBy('users.name', 'students.studentID', 'students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id')
+        ->get();
 
         return view('students.payment', compact('payments'));
     }

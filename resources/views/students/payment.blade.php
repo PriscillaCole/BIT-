@@ -31,27 +31,26 @@
                     </thead>
                     <tbody>
                       @foreach ($payments as $payment)
-                      {{-- <tr>
-                        <td>{{ $registration->academic_year}}</td>
-                        <td>{{ $registration->semster}}</td>
-                        <td>{{ $registration->student->course->name }}</td>
-                        <td>{{ $registration->student->course->fees}}</td>
-                        <td>{{ $amt}}</td>
-                        <td>{{ $registration->student->course->fees - $amt}}</td>
-                        <td>{{ $rep}}</td>
+                      <tr>
+                        <td>{{ $payment->academic_years}}</td>
+                        <td>{{ $payment->semester}}</td>
+                        <td>{{ $payment->course }}</td>
+                        <td>{{ $payment->semester_1}}</td>
+                        <td>{{ $payment->amount}}</td>
+                        <td>{{ $payment->amount}}</td>
                         <td>
                    
-                          @if (($registration->student->course->fees - $amt) == 0)
+                          {{-- @if (($payment->student->course->fees - $amt) == 0)
                             <button disabled class="btn btn-success">Fully Paid</button>
                           @elseif ($amt == 0)
-                            <a href="{{ route('payment.edit', ['payment' => $registration->payment]) }}"  class="btn btn-danger">Not Paid</a>
-                            @elseif (($registration->student->course->fees - $amt)<=0)
+                            <a href="{{ route('payment.edit', ['payment' => $payment->payment]) }}"  class="btn btn-danger">Not Paid</a>
+                            @elseif (($payment->student->course->fees - $amt)<=0)
                                     <a href=""  class="btn btn-secondary">Fully Paid</a>
                           @else
-                          <a href="{{ route('payment.edit', ['payment' => $registration->payment]) }}"  class="btn btn-primary">Partially Paid</a>
-                          @endif
+                          <a href="{{ route('payment.edit', ['payment' => $payment->payment]) }}"  class="btn btn-primary">Partially Paid</a>
+                          @endif --}}
                         </td>
-                      </tr> --}}
+                      </tr>
                       @endforeach
                     </tbody>
                     <tfoot>

@@ -592,6 +592,7 @@ class ComposerStaticInit220de0dcd3d6fd71963cac60168643c2
         'App\\Models\\Announcement' => __DIR__ . '/../..' . '/app/Models/Announcement.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Models/Course.php',
         'App\\Models\\Course_unit' => __DIR__ . '/../..' . '/app/Models/Course_unit.php',
+        'App\\Models\\Enrollment' => __DIR__ . '/../..' . '/app/Models/Enrollment.php',
         'App\\Models\\Finances' => __DIR__ . '/../..' . '/app/Models/Finances.php',
         'App\\Models\\Lecture_Course_units' => __DIR__ . '/../..' . '/app/Models/Lecture_Course_units.php',
         'App\\Models\\Lecturer' => __DIR__ . '/../..' . '/app/Models/Lecturer.php',
