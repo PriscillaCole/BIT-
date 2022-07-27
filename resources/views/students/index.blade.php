@@ -439,7 +439,7 @@
             document.getElementById("studentDetailsYear").innerHTML=data.data.academic_year
             document.getElementById("studentDetailsDelivery").innerHTML=data.data.delivery
             document.getElementById("studentDetailsSponsorship").innerHTML=data.data.sponsorship
-            document.getElementById("studentDetailsCountry").innerHTML=data.data.studentID
+            document.getElementById("studentDetailsCountry").innerHTML=data.data.country
             document.getElementById("studentDetailsNationality").innerHTML=data.data.nationality
             document.getElementById("studentDetailsDistrict").innerHTML=data.data.district
             document.getElementById("studentDetailsPostal").innerHTML=data.data.postal

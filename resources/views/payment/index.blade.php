@@ -72,7 +72,7 @@
                         <tr>
                             <td>{{ $payment->studentID }}</td>
                              <td>{{ $payment->name }}</td>
-                            <td>{{ $payment->course_name }}</td>
+                            <td>{{ $payment->course }}</td>
                             <td>{{ $payment->academic_years }}</td>
                             <td>{{ $payment->semester }}</td>
                             <td>

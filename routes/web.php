@@ -54,7 +54,7 @@ Route::group(['middleware'=>['auth']], function(){
     Route::resource('accountant', AccountantController::class);
     Route::resource('admin', AdminController::class);
     Route::resource('course', CourseController::class);
-    Route::get('/show', [StudentController::class, 'show'])->name('students.show');
+    Route::get('/show/{student}', [StudentController::class, 'show'])->name('students.show');
     Route::get('/create', [StudentController::class, 'create'])->name('students.create');
 
     Route::get('/student-marks',[StudentController::class,'Stud_marks'])->name('Stud_marks');
@@ -71,7 +71,7 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('/student/{student}/pay', function(Student $student){
         return view('payment.create', compact('student'));
     })->name('pay');
-    Route::get('/payment/{student}/payments', [PaymentController::class, 'studentPayment'])->name('payments');
+    Route::get('/payment/{user}/payments', [PaymentController::class, 'studentPayment'])->name('payments');
 
     Route::get('/semesterFees', [PaymentController::class,'findSemesterFees']);
 });
@@ -150,7 +150,5 @@ Route::post('/store', [FinanceController::class,'store'])->name('finances.store'
 Route::get('/edit/{id}', [FinanceController::class,'edit'])->name('finances.edit');
 Route::post('/update', [FinanceController::class,'update'])->name('finances.update');
 Route::post('/delete', [FinanceController::class,'destroy'])->name('finances.destroy');
-
-
 
 });

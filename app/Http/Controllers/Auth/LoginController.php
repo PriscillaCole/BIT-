@@ -70,7 +70,7 @@ class LoginController extends Controller
                 $student = Student::where('user_id', $user_id)->get();
                 //Store session of Student
                 session(['user'=>$student]);
-                return redirect()->route('students.show' ,['student'=>$student]);
+                return redirect()->route('student.show' ,['student'=>$user_id]);
             } elseif (auth()->user()->role == 'Admin'){
                 $user_id = Auth::user()->id;
                 $admin = Admin::where('user_id', $user_id)->get()[0];

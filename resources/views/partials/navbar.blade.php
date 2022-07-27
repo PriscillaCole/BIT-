@@ -7,7 +7,7 @@
     </li>
     <li class="nav-item d-none d-sm-inline-block">
       @if (Auth::user()->role == 'Student')
-        <a href="{{ route('student.show', ['student' => session('user')])}}" class="nav-link">Home</a> 
+        {{-- <a href="{{ route('students.show', ['student' => session('user')])}}" class="nav-link">Home</a>  --}}
       @endif
       @if (Auth::user()->role == 'Admin')
         <a href="{{ route('admin.show', ['admin' => session('user')])}}" class="nav-link">Home</a> 

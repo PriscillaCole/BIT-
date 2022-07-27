@@ -68,6 +68,7 @@
                     <?php
                     $lecture_course_code= App\Models\Lecture_Course_units::where('user_id', $student->user->id)->get();
                     $course_code=App\Models\Course_unit::all();
+                    echo ('hello');
                     ?>
                         <tr>
                             <td>{{ $student->EmployID }}</td>

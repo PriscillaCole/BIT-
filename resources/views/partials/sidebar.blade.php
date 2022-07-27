@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   @if (Auth::user()->role == 'Student')
-    <a href="{{ route('student.show', ['student' => session('user')])}}" class="brand-link"> 
+    <a href="{{ route('students.show', ['student' => Auth::user()->id])}}" class="brand-link"> 
   @endif
   @if (Auth::user()->role == 'Admin')
     <a href="{{ route('admin.show', ['admin' => session('user')])}}" class="brand-link"> 
@@ -47,7 +47,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('student.show', ['student' => session('user')]) }}" class="nav-link {{ (request()->is('student*')) ? 'active' : '' }}">
+          <a href="{{ route('students.show', ['student' => Auth::user()->id]) }}" class="nav-link {{ (request()->is('student*')) ? 'active' : '' }}">
             <p>
              My Profile
             </p>
@@ -62,7 +62,7 @@
           </a>
         </li>
         <li class="nav-item">  
-          <a href="{{ route('payments', ['student' => session('user')]) }}" class="nav-link {{ (request()->is('payment*')) ? 'active' : '' }}">
+          <a href="{{ route('payments', ['user' => Auth::user()->id]) }}" class="nav-link {{ (request()->is('payment*')) ? 'active' : '' }}">
             <p>
             Financial Statement
             </p>

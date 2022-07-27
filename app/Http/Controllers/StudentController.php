@@ -227,29 +227,14 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
-    {
-        // $this->authorize('view', $student);
-
-        //Show Student
-        // if (is_null(Payment::where(['studentID'=>$student->studentID])->latest()->first())) {
-        //     # code...
-        //      dd($student,Course::where(['id'=>$student->course_id])->latest()->first()->fees);
-        //    $amt=0;
-        //     $rep="BIT/000";
-        // }else {
-        //     dd($student);
-        //    $amt=Payment::where(['studentID'=>$student->studentID])->latest()->first()->amount;
-        //    $rep=Payment::where(['studentID'=>$student->studentID])->latest()->first()->receipt_id;
-        // }
-        
-        
-        $student = Registration::select('users.*', 'registrations.*','students.*')
-        ->where('student_id', $student->id)
-        ->join('students', 'registrations.student_id', '=', 'students.id', )
-        ->join('users', 'students.user_id','=', 'users.id')
+    public function show(User $student)
+    {   
+        $students = User::select('users.*', 'registrations.*','students.*')
+        ->where('users.id', $student)
+        ->join('students', 'students.user_id', '=', 'users.id', )
+        ->join('registrations', 'registrations.student_id','=', 'students.id')
         ->first();
-
+        echo($students);
        return view('students.show', compact('student'));
     }
 

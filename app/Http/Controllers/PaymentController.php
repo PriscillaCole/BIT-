@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Payment;
 use App\Models\PaymentSummary;
 use App\Models\Registration;
@@ -234,11 +235,15 @@ class PaymentController extends Controller
         //
     }
 
-    public function studentPayment(Student $student)
+    public function studentPayment(User $user)
     {
-        $registrations = $student->registration;
+        $student = Student::where('user_id', $user->id)->first();
 
-        return view('students.show', compact('registrations'));
+        $registration =  Registration::where('student_id', $student->id)->first();
+
+        $payments = PaymentSummary::select('payment_summaries.*', 'payments.*')->where('registration_id', $registration->id)->join('payments', 'payment_summaries.id','=', 'payments.payment_summaries_id')->get();
+
+        return view('students.payment', compact('payments'));
     }
 
     public function findSemesterFees(Request $request){
