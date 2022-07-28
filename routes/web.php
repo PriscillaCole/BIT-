@@ -82,6 +82,8 @@ Route::group(['middleware'=>['auth']], function(){
 
     Route::post('/register_courseunits', [RegistrationController::class,'registerCourseUnits']);
 
+    Route::get('/delete', [RegistrationController::class, 'destroy'])->name('registration.destroy');
+
 });
 
 Route::group(['middleware'=>['auth'],'prefix'  =>   'Course-Unit'], function() {

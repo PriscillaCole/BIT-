@@ -30,6 +30,17 @@
               </h3>
             </div>
             <!-- /.card-header -->
+            @if($semster == "Off")
+            <div class="card-body">
+              <div class="callout">
+                <strong>Welcome to on-line Registration </strong>
+                <h4> <strong>Academic Year: </strong>{{ $academic_year }} <strong>Course:</strong> {{ $student->course }}</h4>
+                <h4>You are currently off semester so you cannot register, Please contact an administrator for help incase this isnt correct</h4>
+              </div>
+            </div>
+            @endif
+
+            @if($semster == "Semester 1" || $semster == "Semester 2")
             <div class="card-body">
               <div class="callout">
                 <strong>Welcome to on-line Registration </strong>
@@ -46,11 +57,7 @@
                         <label for="semester">Semester:</label>
                       </div>
                       <div class="form-group col-md-3">
-                        <select class="form-control select2" placeholder="Select a Semester" name="semester" style="width: 100%;" id="semesterSelect" required>
-                          <option value="">Select Semester</option>
-                          <option value="Semester 1">I</option>
-                          <option value="Semester 2">II</option>
-                        </select>
+                        <input type="text" class="form-control" placeholder="Enter semester" id="semesterInput" value="{{ $semster }}" disabled>
                       </div>
                       
                       <div class="form-group col-md-1">
@@ -139,6 +146,7 @@
 
           </div>
           <!-- /.card -->
+        @endif
         </div>
         <!-- /.col -->
       </div>
@@ -157,9 +165,9 @@
     let data = {
 
     }
-    $(document).on('change', '#semesterSelect', function(e){ 
-      semester = e.target.value
-    })
+    // $(document).on('change', '#semesterSelect', function(e){ 
+    //   semester = e.target.value
+    // })
 
     $(document).on('change', '#yearSelect', function(e){ 
       year = e.target.value
@@ -170,6 +178,7 @@
     $(document).on('click', '#submitButton', function(e){
       e.preventDefault();
       let _token   = $('meta[name="csrf-token"]').attr('content');
+      semester = $('#semesterInput').val()
       $.ajax({
         type: "POST",
         url:'{!!URL::to('courseUnits')!!}',
@@ -183,7 +192,7 @@
           if(items.length > 0){
             let rows = "";
             $.each(items, function(){
-                rows += "<tr><td>" + this.course_name + "</td><td>" + this.course_unit_code + "</td><td class='selectArea'><select class='form-control select2 selectMode' placeholder='Select Enrolment Mode' name='semester' style='width: 100%;' id='modeSelect' required><option value=''>Select Semester</option><option value='Normal'>Normal</option><option value='Retake'>Retake</option></select></td><td>" + this.CU + "</td> <td> <button class='btn btn-success btn-enroll' id="+this.id+" disabled>Enroll</button> </td></tr>";
+                rows += "<tr><td>" + this.course_name + "</td><td>" + this.course_unit_code + "</td><td class='selectArea'><select class='form-control select2 selectMode' placeholder='Select Enrolment Mode' name='semester' style='width: 100%;' id='modeSelect' required><option value=''>Select Enrollment Mode</option><option value='Normal'>Normal</option><option value='Retake'>Retake</option></select></td><td>" + this.CU + "</td> <td> <button class='btn btn-success btn-enroll' id="+this.id+" disabled>Enroll</button> </td></tr>";
             });
 
             $( rows ).appendTo( "#courseUnitAddTable tbody" );

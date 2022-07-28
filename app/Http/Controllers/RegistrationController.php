@@ -22,8 +22,10 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        $academic_year = (new StudentController)->semster(auth()->user()->student)[0]; //Getting Student's academic year
-        $semster = (new StudentController)->semster(auth()->user()->student)[1]; //Getting Student's semster
+        $academic_year = AcademicYear::where(['status' => 1])->first()->academic_years;
+        //Getting Student's academic year
+        $semster = (new StudentController)->getSemesterByStudent(auth()->user()->student);
+
         $registration = Registration::where('student_id', auth()->user()->student->id)->latest()->first();
         $student = Student::where('id', auth()->user()->student->id)->first();
         return view('registration.index', compact('registration', 'semster', 'academic_year', 'student'));
@@ -89,16 +91,22 @@ class RegistrationController extends Controller
     {
         $student_id = auth()->user()->student->id;
         #to be changed to dynamic input
-        $semester = "Semester 1";
+        $semester = (new StudentController)->getSemesterByStudent(auth()->user()->student);
+      
         #Acadmic year from Academic year table
         $academic_year = AcademicYear::where(['status' => 1])->first();
 
-        $registration = Registration::where(['student_id' => $student_id, 'academic_year' => $academic_year->academic_years, 'semster' => $semester])->first();
+        if($semester == "Off"){
+            $registration = null;
+            $enrollments = null;
+        }else{
+            $registration = Registration::where(['student_id' => $student_id, 'academic_year' => $academic_year->academic_years, 'semster' => $semester])->first();
 
-        $enrollments = Enrollment::select('enrollments.*', 'course_units.*')
-        ->where('registration_id', $registration->id)
-        ->join('course_units', 'enrollments.course_unit_id', '=', 'course_units.id')
-        ->get();
+            $enrollments = Enrollment::select('enrollments.*', 'course_units.course_name', 'course_units.course_unit_code', 'course_units.CU')
+            ->where('registration_id', $registration->id)
+            ->join('course_units', 'enrollments.course_unit_id', '=', 'course_units.id')
+            ->get();
+        }
 
         return  view('registration.show', compact('registration', 'enrollments'));
     }
@@ -132,10 +140,7 @@ class RegistrationController extends Controller
      * @param  \App\Models\Registration  $registration
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Registration $registration)
-    {
-        //
-    }
+    
 
     public function courseUnits(Request $request)
     {
@@ -194,5 +199,11 @@ class RegistrationController extends Controller
            );
 
     	return response()->json($data);
+    }
+
+    public function destroy(Request $request)
+    {
+    Enrollment::where('id', intval($request->input('id')))->delete();
+       return redirect()->route('registration.show')->with('success', 'Course unit deleted successfully');
     }
 }

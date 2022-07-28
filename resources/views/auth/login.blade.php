@@ -19,7 +19,8 @@
         {{Session::get('error')}}
     </div>
     @endif
-      <a href="../../index2.html" class="h1">{{ config('app.name', 'Laravel') }}</a>
+    <img src="{{ asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-1" style="opacity: .8; Width: 50px">
+      <div><a href="../../index2.html" class="h1">{{ config('app.name', 'Laravel') }}</a></div>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
@@ -41,11 +42,10 @@
         </div>
 
         <div class="input-group mb-3">
-          <span class="fas fa-lock"></span>
           <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
-              <!-- <span class="fas fa-lock"></span> -->
+               <span class="fas fa-lock"></span>
             </div>
           </div>
           @error('email')

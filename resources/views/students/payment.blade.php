@@ -25,7 +25,7 @@
                       <th>Fees (UGX)</th>
                       <th>Paid (UGX)</th>
                       <th>Balance (UGX)</th>
-                      <th>Receipt ID</th>
+                      {{-- <th>Receipt ID</th> --}}
                       <th> </th>
                     </tr>
                     </thead>
@@ -37,18 +37,10 @@
                         <td>{{ $payment->course }}</td>
                         <td>{{ $payment->semester_1}}</td>
                         <td>{{ $payment->amount}}</td>
-                        <td>{{ $payment->amount}}</td>
+                        <td>{{ $payment->semester_1 - $payment->amount }}</td>
                         <td>
                    
-                          {{-- @if (($payment->student->course->fees - $amt) == 0)
-                            <button disabled class="btn btn-success">Fully Paid</button>
-                          @elseif ($amt == 0)
-                            <a href="{{ route('payment.edit', ['payment' => $payment->payment]) }}"  class="btn btn-danger">Not Paid</a>
-                            @elseif (($payment->student->course->fees - $amt)<=0)
-                                    <a href=""  class="btn btn-secondary">Fully Paid</a>
-                          @else
-                          <a href="{{ route('payment.edit', ['payment' => $payment->payment]) }}"  class="btn btn-primary">Partially Paid</a>
-                          @endif --}}
+                          
                         </td>
                       </tr>
                       @endforeach
@@ -61,7 +53,7 @@
                       <th>Fees (UGX)</th>
                       <th>Paid (UGX)</th>
                       <th>Balance (UGX)</th>
-                      <th>Receipt ID</th>
+                      {{-- <th>Receipt ID</th> --}}
                       <th> </th>
                     </tr>
                     </tfoot>

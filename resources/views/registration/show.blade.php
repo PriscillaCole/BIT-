@@ -58,8 +58,13 @@
                                     <td> {{  $enrollment->course_unit_code }}</td>
                                     <td> {{  $enrollment->mode_of_enrollment }}</td>
                                     <td> {{ $enrollment->CU }}</td> 
-                                    <td><button class="btn btn-danger" id="courseUnitRemove" >Remove</button>
-                                    </div></td>   
+                                    <td> 
+                                        <form action="{{ route('registration.destroy') }}" method="get">
+                                        @csrf
+                                            <input type="hidden" value="{{$enrollment->id}}" name="id"/>
+                                            <button class="btn btn-sm btn-danger show_confirm" data-toggle="tooltip" title='Delete' type="submit">Remove</button>
+                                        </form>
+                                    </td>   
                                 </tr>
                                 @endforeach
                             @endif
@@ -78,8 +83,9 @@
                     </div>
                 @else
                 <div class="callout">
-                    <strong>Not Yet Registered for this Semester</strong>
-                    <p>Register Here</p>
+                    <strong>Not Yet Registered for this Semester or You are off Semester at the moment</strong>
+                  
+                    <a class="btn btn-primary" href="{{ route('registration.index') }}" >Register Here</a>
                 </div>
                 @endif
               </div>
@@ -95,4 +101,5 @@
     </section>
     <!-- /.content -->
   </div>
+
   @endsection

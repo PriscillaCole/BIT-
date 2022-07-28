@@ -158,11 +158,13 @@ class StudentController extends Controller
         $sponsorship = $request->sponsorship;
         $studentID = $request->studentID;
 
+        $academic_year = AcademicYear::where(['status' => 1])->first();
+
         //Save Student Details
         $student = new Student();
         $student->user_id = $user_id;
         $student->intake = $intake;
-        $student->academic_year = (new StudentController)->semster($student)[0];
+        $student->academic_year = $academic_year->academic_years;
         $student->course_id = $course_id;
         $student->course = $course;
         $student->optional_course = $optional_course;
@@ -239,10 +241,10 @@ class StudentController extends Controller
 
     public function findStudentDetails(Request $request){
        // $query=Student::where('id',$request->id)->first();
-       $query = Student::select('users.*', 'registrations.*','students.*')
+       $query = Student::select('users.*','students.*')
        ->where('students.id',$request->id)
        ->join('users', 'students.user_id','=', 'users.id')
-       ->join('registrations', 'students.id','=', 'registrations.student_id')
+    //    ->join('registrations', 'students.id','=', 'registrations.student_id')
        ->first();
 
         $data = array(
@@ -440,6 +442,47 @@ class StudentController extends Controller
         }
     }
     //students unique id
+
+    public static function getSemesterByStudent(Student $student) { 
+        $month = intval(date('m'));
+        
+        
+        if($student->intake == 'January') {
+            if($month >= 1 && $month <= 4){
+                $semester = "Semester 1";
+            }
+            elseif($month >= 7 && $month <= 10){
+                $semester = "Semester 2";
+            }else{
+                $semester = "Off";
+            }
+            return $semester;
+        }
+        elseif($student->intake == 'May') {
+            if($month >= 5 && $month <= 8){
+                $semester = "Semester 1";
+            }
+            elseif($month >= 11 && $month <= 2){
+                $semester = "Semester 2";
+            }else{
+                $semester = "Off";
+            }
+            return $semester;
+        }
+
+        elseif($student->intake == 'September') {
+            if($month >= 9 && $month <= 12){
+                $semester = "Semester 1";
+            }
+            elseif($month >= 2 && $month <= 5){
+                $semester = "Semester 2";
+            }else{
+                $semester = "Off";
+            }
+            
+            return $semester;
+        }
+    }
 
 
    public function studentID(Student $student)
