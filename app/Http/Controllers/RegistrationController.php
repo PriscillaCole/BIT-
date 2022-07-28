@@ -9,6 +9,8 @@ use App\Models\Course_unit;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StudentController;
+use App\Models\AcademicYear;
+use App\Models\Enrollment;
 use Carbon\Carbon;
 
 class RegistrationController extends Controller
@@ -85,7 +87,20 @@ class RegistrationController extends Controller
      */
     public function show(Registration $registration)
     {
-        //
+        $student_id = auth()->user()->student->id;
+        #to be changed to dynamic input
+        $semester = "Semester 1";
+        #Acadmic year from Academic year table
+        $academic_year = AcademicYear::where(['status' => 1])->first();
+
+        $registration = Registration::where(['student_id' => $student_id, 'academic_year' => $academic_year->academic_years, 'semster' => $semester])->first();
+
+        $enrollments = Enrollment::select('enrollments.*', 'course_units.*')
+        ->where('registration_id', $registration->id)
+        ->join('course_units', 'enrollments.course_unit_id', '=', 'course_units.id')
+        ->get();
+
+        return  view('registration.show', compact('registration', 'enrollments'));
     }
 
     /**
@@ -130,6 +145,52 @@ class RegistrationController extends Controller
 
         $data = array(
             'data'  => $course_units,
+           );
+
+    	return response()->json($data);
+    }
+
+    public function registerCourseUnits(Request $request)
+    {
+        $student_id = auth()->user()->student->id;
+
+        $previous_registration = Registration::where(['student_id' => $student_id, 'academic_year' => $request->academic_year, 'semster' => $request->semester])->first();
+
+        if(!$previous_registration) {
+            $registration = Registration::create([
+                'student_id' => $student_id,
+                'academic_year' => $request->academic_year,
+                'year_of_study' => $request->year,
+                'semster' => $request->semester
+            ]);
+
+            $enrollments = $request->enrollments;
+
+            foreach ($enrollments as $enrollment) {
+                $enroll = Enrollment::create([
+                    'student_id'=>$student_id,
+                    'registration_id'=>$registration->id,
+                    'course_unit_id'=>$enrollment["id"],
+                    'mode_of_enrollment'=>$enrollment["mode"]
+                ]);
+            }
+        }
+
+        else{
+            $enrollments = $request->enrollments;
+
+            foreach ($enrollments as $enrollment) {
+                $enroll = Enrollment::create([
+                    'student_id'=>$student_id,
+                    'registration_id'=>$previous_registration->id,
+                    'course_unit_id'=>$enrollment["id"],
+                    'mode_of_enrollment'=>$enrollment["mode"]
+                ]);
+            }
+        }
+
+        $data = array(
+            'data'  => "success",
            );
 
     	return response()->json($data);

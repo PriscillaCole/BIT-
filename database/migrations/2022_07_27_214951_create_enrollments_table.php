@@ -18,7 +18,7 @@ class CreateEnrollmentsTable extends Migration
             $table->integer('student_id');
             $table->integer('registration_id');
             $table->integer('course_unit_id');
-            $table->integer('mode_of_enrollment_id');
+            $table->string('mode_of_enrollment');
             $table->timestamps();
         });
     }

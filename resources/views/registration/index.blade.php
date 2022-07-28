@@ -33,7 +33,7 @@
             <div class="card-body">
               <div class="callout">
                 <strong>Welcome to on-line Registration </strong>
-                <h4><strong>Academic Year: </strong>{{ $academic_year }} <strong>Course:</strong> {{ $student->course }}</h4>
+                <h4 strong>Academic Year: </strong>{{ $academic_year }} <strong>Course:</strong> {{ $student->course }}</h4>
                 {{-- <p>
                   NOTE: <br>
                   Registration is Mandatory! <br><br>
@@ -134,9 +134,7 @@
         </table>
       </div>
 
-      <button class="btn btn-primary" id="submitFinalButton" >Submit Registration</button>
-
-
+        <button class="btn btn-primary" id="submitFinalButton" value={{ $academic_year }}>Submit Registration</button>
 
 
           </div>
@@ -154,6 +152,11 @@
   $(document).ready(function(){
     let semester
     let year
+    let enrollments = []
+
+    let data = {
+
+    }
     $(document).on('change', '#semesterSelect', function(e){ 
       semester = e.target.value
     })
@@ -204,6 +207,10 @@
       $(this).html("Unenroll")
       $(this).css('background-color','red');
       const selected = $(this).closest('tr').find('.selectMode').find(':selected').text()
+      const courseUnitId = $(this).attr('id')
+
+      const courseUnit = {"id":courseUnitId, "mode":selected}
+      enrollments.push(courseUnit);
 
       $(this).closest('tr').find('.selectMode').remove()
       $(this).closest('tr').find('.selectArea').html(selected)
@@ -223,6 +230,7 @@
       $(this).closest('tr').find('.selectArea').html("<select class='form-control select2 selectMode' placeholder='Select Enrolment Mode' name='semester' style='width: 100%;' id='modeSelect' required><option value=''>Select Semester</option><option value='Normal'>Normal</option><option value='Retake'>Retake</option></select>")
 
       var row = $(this).closest('tr').clone();
+      enrollments.pop(enrollments.find(x => x.id === this.id))
       
       $('#courseUnitAddTable tbody').append(row)
       $(this).closest('tr').remove()
@@ -230,6 +238,27 @@
 
     $('#courseUnitAddTable').on('change', '.selectMode',function(e) {  
       $(this).closest('tr').find('.btn-enroll').removeAttr('disabled')    
+    })
+
+    $(document).on('click', '#submitFinalButton', function(e){
+      e.preventDefault();
+      let _token   = $('meta[name="csrf-token"]').attr('content');
+      $(this).prop('disabled', true);
+
+      // const academicYear = $('#academicYear').val()
+      $.ajax({
+        type: "POST",
+        url:'{!!URL::to('register_courseunits')!!}',
+        data:JSON.stringify({'academic_year':e.target.value, 'year':year, 'semester':semester, 'enrollments':enrollments, '_token':_token}),
+        contentType: "application/json; charset=utf-8",
+        dataType:'json',
+        success: function(data){
+          window.location.replace("{{ route('registration.show') }}")
+        },
+        error: function(e){
+          console.log(e)
+        }
+      })
     })
   })
 

@@ -54,13 +54,25 @@
           </a>
         </li>        
       
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="{{ route('registration.index') }}" class="nav-link {{ (request()->is('registration*')) ? 'active' : '' }}">
             <p>
               Registration
             </p>
           </a>
+        </li> --}}
+
+        <li class="nav-item">
+          
+          <a  href="" class=" nav-link dropdown-toggle" data-toggle="dropdown">
+          Registration </a>
+          <ul  style="list-style-type:none;background-color:#294a70;" class="dropdown-menu" role="menu">
+            <li class="nav-item "> <a href="{{ route('registration.index') }}" class="nav-link {{ (request()->is('registration*')) ? 'active' : '' }}">Register</a></li>
+            <li class="nav-item "> <a href="{{ route('registration.show') }}" class="nav-link {{ (request()->is('registration*')) ? 'active' : '' }}">View Registration</a></li>
+            
+          </ul>
         </li>
+
         <li class="nav-item">  
           <a href="{{ route('payments', ['user' => Auth::user()->id]) }}" class="nav-link {{ (request()->is('payment*')) ? 'active' : '' }}">
             <p>

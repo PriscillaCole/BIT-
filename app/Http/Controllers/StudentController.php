@@ -234,7 +234,6 @@ class StudentController extends Controller
         ->join('students', 'students.user_id', '=', 'users.id', )
         ->join('registrations', 'registrations.student_id','=', 'students.id')
         ->first();
-        echo($students);
        return view('students.show', compact('student'));
     }
 

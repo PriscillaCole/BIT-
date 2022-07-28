@@ -18,6 +18,7 @@ class CreateRegistrationsTable extends Migration
             $table->foreignId('student_id');
             $table->string('academic_year')->default('2021/2022');
             $table->string('semster')->default('I');
+            $table->string('year_of_study')->default(1);
             $table->timestamps();
         });
     }

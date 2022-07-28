@@ -15,7 +15,8 @@ class Registration extends Model
     protected $fillable = [
         'student_id',
         'academic_year',
-        'semster'
+        'semster',
+        'year_of_study',
     ];
 
     public function student(){
