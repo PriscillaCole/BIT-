@@ -74,6 +74,8 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('/payment/{user}/payments', [PaymentController::class, 'studentPayment'])->name('payments');
 
     Route::get('/semesterFees', [PaymentController::class,'findSemesterFees']);
+
+    Route::post('/courseUnits', [RegistrationController::class,'courseUnits']);
 });
 
 Route::group(['middleware'=>['auth'],'prefix'  =>   'Course-Unit'], function() {

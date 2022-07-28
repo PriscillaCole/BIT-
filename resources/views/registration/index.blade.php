@@ -134,6 +134,8 @@
         </table>
       </div>
 
+      <button class="btn btn-primary" id="submitFinalButton" >Submit Registration</button>
+
 
 
 
@@ -201,7 +203,10 @@
       // const row = $(this).closest('tr')
       $(this).html("Unenroll")
       $(this).css('background-color','red');
-      $(this).closest('tr').find('.selectMode').find(':selected').text()
+      const selected = $(this).closest('tr').find('.selectMode').find(':selected').text()
+
+      $(this).closest('tr').find('.selectMode').remove()
+      $(this).closest('tr').find('.selectArea').html(selected)
 
       var row = $(this).closest('tr').clone();
       
@@ -215,6 +220,8 @@
       $(this).html("Enroll")
       $(this).css('background-color','#5cb85c');
       $(this).prop("disabled", true);
+      $(this).closest('tr').find('.selectArea').html("<select class='form-control select2 selectMode' placeholder='Select Enrolment Mode' name='semester' style='width: 100%;' id='modeSelect' required><option value=''>Select Semester</option><option value='Normal'>Normal</option><option value='Retake'>Retake</option></select>")
+
       var row = $(this).closest('tr').clone();
       
       $('#courseUnitAddTable tbody').append(row)

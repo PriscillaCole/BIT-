@@ -185,11 +185,11 @@ class StudentController extends Controller
          //->withProperties(['customProperty' => 'customValue'])
          ->log('student details saved by ' . $userlog->name);
 
-        $registration = Registration::create([
-            'student_id' => $student->id,
-            'academic_year' => $student->academic_year,
-            'semster' => 1,
-        ]);
+        // $registration = Registration::create([
+        //     'student_id' => $student->id,
+        //     'academic_year' => $student->academic_year,
+        //     'semster' => 1,
+        // ]);
          // Add activity logs
          $userlog = Auth::user();
          activity('registration')

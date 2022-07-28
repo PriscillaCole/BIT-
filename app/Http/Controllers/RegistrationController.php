@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Registration;
 use App\Models\Payment;
+use App\Models\Student;
+use App\Models\Course_unit;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StudentController;
 use Carbon\Carbon;
@@ -20,7 +23,8 @@ class RegistrationController extends Controller
         $academic_year = (new StudentController)->semster(auth()->user()->student)[0]; //Getting Student's academic year
         $semster = (new StudentController)->semster(auth()->user()->student)[1]; //Getting Student's semster
         $registration = Registration::where('student_id', auth()->user()->student->id)->latest()->first();
-        return view('registration.index', compact('registration', 'semster', 'academic_year'));
+        $student = Student::where('id', auth()->user()->student->id)->first();
+        return view('registration.index', compact('registration', 'semster', 'academic_year', 'student'));
     }
 
     /**
@@ -116,5 +120,18 @@ class RegistrationController extends Controller
     public function destroy(Registration $registration)
     {
         //
+    }
+
+    public function courseUnits(Request $request)
+    {
+        $course = Course::where('id', $request->course_id)->first();
+
+        $course_units = Course_unit::where(['YearOfStudy'=>$request->year, 'Semester'=>$request->semester, 'course_id'=>$request->course_id])->get();
+
+        $data = array(
+            'data'  => $course_units,
+           );
+
+    	return response()->json($data);
     }
 }

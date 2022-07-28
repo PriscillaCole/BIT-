@@ -303,7 +303,6 @@
 				data:{'id':e.target.value},
 				dataType:'json',//return data will be json
 				success:function(data){
-          console.log(data)
             document.getElementById("studentDetailsName").innerHTML=data.data.name
             document.getElementById("studentDetailsNames").innerHTML=data.data.name
             document.getElementById("studentDetailsStudentId").innerHTML=data.data.studentID
