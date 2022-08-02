@@ -217,11 +217,11 @@
 				dataType:'json',//return data will be json
 				success:function(data){
 
-
+console.log(data);
 					a.find('.student_number').val(data.p.studentID);
 					a.find('.academic_year').val(data.p.academic_year);
           a.find('.name').val(data.data2.name);
-          a.find('.registration_id').val(data.registration.id);
+          // a.find('.registration_id').val(data.registration.id);
           a.find('.course').val(data.p.course);
 
 				},

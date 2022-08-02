@@ -184,6 +184,7 @@
                       </div> --}}
                       <div class="text-center">
                        <img class="profile-user-img img-fluid img-circle"   style="max-width:100px;" src="{{ asset('images')}}/" id="studentDetailsImage">
+                       <input type="hidden" value="{{ asset('images')}}/" id="imageUrl"/>
                       </div>
                       <h3 class="profile-username text-center" id="studentDetailsName"></h3>
                       <p class="text-center"  id="studentDetailsStudentId"></p>
@@ -459,11 +460,10 @@
             document.getElementById("studentDetailsFather_contact").innerHTML=data.data.father_contact
             document.getElementById("studentDetailsMother_name").innerHTML=data.data.mother_name
             document.getElementById("studentDetailsMother_contact").innerHTML=data.data.mother_contact
-            // document.getElementById("studentDetailsImage").src={{ asset('images')}}/data.data.profileImage
+            // document.getElementById("studentDetailsImage").src={{ asset('images')}}/data.data.profileImage imageUrl
+            const url = document.getElementById("imageUrl").value
              const source = document.getElementById("studentDetailsImage").src;
-
-            document.getElementById("studentDetailsImage").src=source+data.data.profileImage
-
+            document.getElementById("studentDetailsImage").src=url+data.data.profileImage
         },
 				error: function(e){
             console.log(e.responseText);

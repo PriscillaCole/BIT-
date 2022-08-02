@@ -98,7 +98,7 @@
                             </td>
 
                             <td>
-                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="detailsButton" value="">
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="financeDetailsButton" value="{{ $payment->registration_id }}">
                                 Details</button>
                             </td>
                             {{-- <td>
@@ -182,98 +182,51 @@
                   <!-- /.card -->
                 </div>
                 <!-- /.col -->
-                <div style="width:463px;">
-                  <div class="card card-default">
+                
+                  {{-- <div class="card card-default"> --}}
                     <div class="card-header">
                       <h3 class="card-title">
                         <i class="fas fa-user"></i>
-                        Personal Information
+                        Financial Details
                       </h3>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body"  style="width:460px;">
+                    <div class="card-body"  style="width:500px;">
                       <div class="callout">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5>Name:</h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsNames"></p>
-                          </div>
-                        </div>
+                        <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th>Reason</th>
+                            <th>Amount</th>
+                            <th>Balance</th>
+                            <th>Receipt ID</th>
+                          </tr>
+                        </thead>
+                      <tbody>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
                         
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5>Email:</h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsEmail"></p>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5>Phone Numbers:</h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsPhone_1"></p>
-                            <p id="studentDetailsPhone_2"></p>
-                          </div>
-                        </div>  
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5>Course:</h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsCourses"></p>
-                          </div>
-                        </div>  
-                        
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5 id="semester_fee"></h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsCourse_fees1"></p>
-                          </div>
-                        </div> 
-                        
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5 id="semester_amount"></h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsAmount_1"></p>
-                          </div>
-                        </div>
-                        
-                        
-                        {{-- <div class="row">
-                          <div class="col-md-6">
-                            <h5>Course Fees Semester_2:</h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsCourse_fees2"></p>
-                          </div>
-                        </div>
-                        
-                        <div class="row">
-                          <div class="col-md-6">
-                            <h5>Amount Paid for Semester_2:</h5>
-                          </div>
-                          <div class="col-md-6">
-                            <p id="studentDetailsAmount_2"></p>
-                          </div>
-                        </div> --}}
-                        
-                        </div> 
-                        </div>
+                        <th>Reason</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Receipt ID</th>
+                      </tr>
+                    </tfoot>
+                      </table>
                       </div>
                     <!-- /.card-body -->
                   </div>
                   <!-- /.card -->
-                </div>
+                {{-- </div> --}}
                 <!-- /.col -->
-              </div>
+              
               <!-- /.row -->
         
             <div class="modal-footer">

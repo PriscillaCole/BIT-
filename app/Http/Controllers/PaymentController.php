@@ -24,14 +24,14 @@ class PaymentController extends Controller
     public function index()
     {
         $payments = DB::table('payment_summaries')
-        ->select(DB::raw("SUM(`payments`.`amount`) as amount"), 'users.name', 'students.studentID','students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id')
+        ->select(DB::raw("SUM(`payments`.`amount`) as amount"), 'users.name', 'students.studentID','students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id','payment_summaries.registration_id')
         ->join('registrations','payment_summaries.registration_id','=','registrations.id')
         ->join('students', 'registrations.student_id', '=', 'students.id')
         ->join('finances','finances.course_id','=','students.course_id')
         ->join('academic_years', 'finances.academic_year_id', '=', 'academic_years.id')
         ->join('users', 'students.user_id', '=', 'users.id')
         ->join('payments', 'payment_summaries.id', '=', 'payments.payment_summaries_id')
-        ->groupBy('users.name', 'students.studentID', 'students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id')
+        ->groupBy('users.name', 'students.studentID', 'students.course', 'payment_summaries.semester', 'finances.semester_1', 'finances.semester_2', 'academic_years.academic_years', 'payment_summaries.payment_status', 'students.course_id', 'finances.course_id','payment_summaries.registration_id')
         ->get();
 
         // $payments = PaymentSummary::select('registrations.*', 'finances.*', 'payment_summaries.*', 'academic_years.academic_years', 'students.studentID', 'users.name' )
@@ -174,12 +174,14 @@ class PaymentController extends Controller
     }
 
     public function findPaymentDetails(Request $request){
-        $query = Registration::select('users.*', 'registrations.*','students.*','payments.*' , 'finances.*')
-        ->where('payments.id',$request->id)
-        ->join('payments', 'registrations.id', '=', 'payments.registration_id')
+         $query = Registration::select('users.*', 'registrations.*','students.*','payments.*','payment_summaries.*' , 'finances.*','academic_years.academic_years')
+        ->where('payments.id',$request->registration_id)
+        ->join('payment_summaries','registrations.id','=','payment_summaries.registration_id',)
         ->join('students', 'registrations.student_id', '=', 'students.id')
+        ->join('finances','finances.course_id','=','students.course_id')
+        ->join('academic_years', 'finances.academic_year_id', '=', 'academic_years.id')
         ->join('users', 'students.user_id', '=', 'users.id')
-        ->join('finances', 'finances.academic_year', '=', 'students.academic_year')
+        ->join('payments', 'payment_summaries.id', '=', 'payments.payment_summaries_id')
         ->first();
  
          $data = array(

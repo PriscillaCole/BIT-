@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\AcademicYear;
 use App\Models\Registration;
 use App\Models\Course;
 use App\Models\Marks;
@@ -194,8 +195,8 @@ class StudentController extends Controller
         // ]);
          // Add activity logs
          $userlog = Auth::user();
-         activity('registration')
-         ->performedOn($registration)
+         activity('student')
+         ->performedOn($student)
          ->causedBy($userlog)
          //->withProperties(['customProperty' => 'customValue'])
          ->log('registration updated by ' . $userlog->name);
@@ -466,6 +467,7 @@ class StudentController extends Controller
                 $semester = "Semester 2";
             }else{
                 $semester = "Off";
+
             }
             return $semester;
         }
